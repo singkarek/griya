@@ -66,10 +66,10 @@
         </div>
 
         <div class="mb-3">
-            <label for="notlp" class="form-label">No Tlp</label>
-            <input type="number" class="form-control @error('notlp') is-invalid @enderror" id="notlp" name='notlp' required value="{{ 
-                old('notlp') }}">
-            @error('notlp')
+            <label for="no_tlp" class="form-label">No Tlp</label>
+            <input type="number" class="form-control @error('no_tlp') is-invalid @enderror" id="no_tlp" name='no_tlp' required value="{{ 
+                old('no_tlp') }}">
+            @error('no_tlp')
                 <div class="ivalid-feedback">
                     {{ $message }}
                 </div>
