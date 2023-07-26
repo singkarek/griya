@@ -33,14 +33,14 @@ class SalesController extends Controller
         // dd($request);
         $validateData = $request->validate([
             'nama' => 'required|max:255',
-            'notlp' => 'required|max:20',
+            'no_tlp' => 'required|max:20',
             'alamat' => 'required',
             'rt' => 'required|max:11',
             'rw' => 'required|max:11',
             'paket_layanan' => 'required|max:11'
         ]);
 
-        $validateData['status'] = 'new input';
+        $validateData['status_akhir'] = 'new input';
 
         // dd($validateData);
 
