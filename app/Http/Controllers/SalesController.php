@@ -37,16 +37,16 @@ class SalesController extends Controller
             'alamat' => 'required',
             'rt' => 'required|max:11',
             'rw' => 'required|max:11',
-            'paket_layanan' => 'required|max:11'
+            'id_paket_layanan' => 'required|max:11'
         ]);
 
-        $validateData['status_akhir'] = 'new input';
+        $validateData['status_akhir'] = 'closing';
 
         // dd($validateData);
 
         Sales::create($validateData);
 
-        return redirect('/sales/customer/complate')->with('success', 'Data berhasil ditambahkan!!!');
+        return redirect('/sales/customer/complate')->with('success', 'Data berhasil ditambahkan !');
     }
 
     public function antrian()

@@ -17,6 +17,7 @@
 
 <form method="post" action="/sales/create/customer" autocomplete="">
     @csrf
+
         <div class="mb-2">
           <label for="nama" class="form-label">Nama Customer</label>
           <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name='nama' required autofocus value="{{ 
@@ -77,8 +78,8 @@
         </div>
 
         <div class="mb-3 ">
-            <label for="paket_layanan" class="h6 form-label @error('paket_layanan') is-invalid @enderror" >Paket layanan</label>
-            <select class="form-select" name="paket_layanan">
+            <label for="id_paket_layanan" class="h6 form-label @error('id_paket_layanan') is-invalid @enderror" >Paket layanan</label>
+            <select class="form-select" name="id_paket_layanan">
               @foreach ($layananpakets as $paket)
               <option value="{{ $paket->id }}" >{{ $paket->nama_layanan}} | {{ $paket->harga }}</option>         
               @endforeach

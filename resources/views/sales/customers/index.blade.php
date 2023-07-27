@@ -23,31 +23,39 @@
           <th scope="col">Nama</th>
           <th scope="col">Alamat</th>
           <th scope="col">No Tlp</th>
-          <th scope="col">Status</th>
           <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
         @foreach ($customers as $customer )
             <tr>
-            <td>{{ $loop->iteration }}</td>
-            <td>{{ $customer->nama }}</td>
-            <td>{{ $customer->alamat }}</td>
-            <td>{{ $customer->notlp }}</td>
-            <td>Foto rumah</td>
-            <td>
-              {{-- @if($customer->status == 'new input')
-              <a href="/sales/customer/{{ $customer->id }}/melengkapi" class="badge btn-warning"><span data-feather="check"></span></a>
-              @endif --}}
-               <a href="/sales/customer/{{ $customer->id }}/melengkapi" class="badge btn-success"><span data-feather="edit"></span></a>
-               
+              <td>{{ $loop->iteration }}</td>
+              <td>{{ $customer->nama }}</td>
+              <td>{{ $customer->alamat }}</td>
+              <td>{{ $customer->no_tlp }}</td>
+              <td>
+                @if($customer->foto_ktp == null)
+                <a href="/sales/customer/{{ $customer->id }}/melengkapi" class="badge btn-success"><span data-feather="edit"></span> Foto KTP</a>
+                @endif
+                @if($customer->foto_ktp != null && $customer->foto_rumah == null)
+                <a href="/sales/customer/{{ $customer->id }}/melengkapi" class="badge btn-success"><span data-feather="edit"></span> Foto Rumah</a>
+                @endif
+                @if($customer->foto_rumah != null && $customer->lat == null)
+                <a href="/sales/customer/{{ $customer->id }}/melengkapi" class="badge btn-success"><span data-feather="edit"></span> Koordinat Rumah</a>
+                @endif
+                @if($customer->lat != null && $customer->id_dp == null)
+                <a href="/sales/customer/{{ $customer->id }}/melengkapi" class="badge btn-success"><span data-feather="edit"></span> Pilih ODP</a>
+                @endif
+ 
+                
+                
+                <a href="/sales/customer/{{ $customer->id }}/melengkapi" class="badge btn-warning"><span data-feather="edit"></span> Detail</a>
                 {{-- <form action="/dashboard/posts/" method="post" class="d-inline">
                     @method('delete')
                     @csrf
                     <button class="badge btn-danger border-0" onclick="return confirm('Yakin hapus Post ?')"><span data-feather="x-circle"></span></button>
                 </form> --}}
-        
-            </td>
+              </td>
             </tr>
         @endforeach
       </tbody>
