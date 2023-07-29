@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Tiang;
+use App\Models\Pole;
 use App\Models\Placement;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,9 +12,10 @@ class TiangController extends Controller
     public function index()
     {
         $place = Placement::select('tiang_id')->get();
+        $result_tiang = Pole::whereNotIn('id', $place)->get();
 
         return view('admin.tiang.index',[
-            "tiangs" => Tiang::whereNotIn('id', $place)->get(),
+            "tiangs" => $result_tiang,
 
         ]);
     }
@@ -26,19 +27,37 @@ class TiangController extends Controller
 
     public function store(Request $request)
     {
-        $nilai_terahir = Tiang::count()+1;
+        $validateData = $request->validate([
+            'ref' => 'required|max:15',
+            'vendor' => 'required',
+            'tinggi' => 'required',
+            'ukuran' => 'required',
+            'tebal' => 'required',
+            'harga' => 'required',
+            'jumlah_tiang' => 'required',
+        ]);
+
+
+        $nilai_terahir = Pole::count()+1;
+        $harga = $validateData["harga"] / $validateData["jumlah_tiang"] ;
+        $ref = strtoupper($validateData["ref"]);
+        $vendor = strtoupper($validateData["vendor"]);
+        $banyak_tiang = $validateData["jumlah_tiang"];
 
         $data_tiang = [];
-        $harga = $request->harga / $request->jumlah_tiang ;
         
-        for($a = 0 ; $a<$request->jumlah_tiang ; $a++){
-            $nama_tiang = "T".$a+$nilai_terahir;
-            $data_tiang[] = ["nama_tiang" => $nama_tiang, "harga" => $harga];
+        for($a = 0 ; $a<$banyak_tiang ; $a++){
+            $nama_tiang = "T-".$a+$nilai_terahir;
+            $data_tiang[] = [
+                "ref" => $ref, "vendor" => $vendor,
+                "tinggi" => $validateData["tinggi"],"ukuran" => $validateData["ukuran"],
+                "tebal" => $validateData["tebal"], "harga" => $harga,
+                "nama_tiang" => $nama_tiang
+            ];
         };
 
-        Tiang::insert($data_tiang);
 
-
-        // return view('admin.tiang.create');
+        Pole::insert($data_tiang);
+        return redirect('/admin/tiang')->with('success', 'Data berhasil ditambahkan !');
     }
 }

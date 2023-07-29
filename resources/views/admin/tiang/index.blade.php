@@ -2,7 +2,7 @@
 
 @section('container')
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Data Tiang</h1>
+    <h1 class="h2">Data Tiang Tersedia</h1>
   </div>
 
   @if(session()->has('success'))
@@ -15,24 +15,36 @@
 
   <div class="table-responsive col-lg-9">
     <table class="table table-striped table-sm">
-      <thead>
+      <thead class="thead-light">
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">Nama Tiang</th>
-          {{-- <th scope="col">Kode Area</th> --}}
+          <th class="w-10">#</th>
+          <th class="w-45">Kode ref</th>
+          <th class="w-45">Nama Tiang</th>
+          <th class="w-45">Vendor</th>
+          <th class="w-45">Tinggi</th>
+          <th class="w-45">Harga</th>
+          <th class="w-45">Tanggal Belanja</th>
+
 
         </tr>
       </thead>
       <tbody>
         @foreach ($tiangs as $tiang )
         <tr>
-          <td>{{ $loop->iteration }}</td>
-          <td>{{ $tiang->nama_tiang }}</td>
-   
+          <td >{{ $loop->iteration }}</td>
+          <td >{{ $tiang->ref }}</td>
+          <td >{{ $tiang->nama_tiang }}</td>
+          <td >{{ $tiang->vendor }}</td>
+          <td >{{ $tiang->tinggi }}</td>
+          <td > Rp {{  number_format( $tiang->harga, 0, ',', '.') }} </td>
+          <td >{{ $tiang->created_at }}</td>
         </tr>
         @endforeach
       </tbody>
     </table>
   </div>
+
+
+
 
 @endsection

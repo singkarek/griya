@@ -14,21 +14,19 @@ Route::prefix('admin')->group( function (){
     Route::controller(AreaController::class)->group( function (){
         Route::get('/area', 'index')->name('admin.area');
         Route::get('/area/create', 'create')->name('area.create');
-
         // Route Post Only //
         Route::post('/create/area', 'store');
     });
     Route::controller(PlacementController::class)->group( function (){
         Route::get('/placement', 'index')->name('admin.placement');
         Route::get('/placement/create', 'create')->name('admin.placement.create');
-
+        Route::get('/placement/create/tiangs', 'ambiltiang');
         // Route Post Only //
         Route::post('/placement/store', 'store');
     });
     Route::controller(TiangController::class)->group( function (){
         Route::get('/tiang', 'index')->name('admin.tiang');
         Route::get('/tiang/create', 'create')->name('admin.tiang.create');
-
         // Route Post Only //
         Route::post('/tiang/store', 'store');
     });

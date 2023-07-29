@@ -81,7 +81,7 @@
             <label for="id_paket_layanan" class="h6 form-label @error('id_paket_layanan') is-invalid @enderror" >Paket layanan</label>
             <select class="form-select" name="id_paket_layanan">
               @foreach ($layananpakets as $paket)
-              <option value="{{ $paket->id }}" >{{ $paket->nama_layanan}} | {{ $paket->harga }}</option>         
+              <option value="{{ $paket->id }}" >{{ $paket->nama_layanan}} | Rp {{ number_format( $paket->harga, 0, ',', '.') }}</option>         
               @endforeach
               {{-- <option selected></option> --}}
             </select>

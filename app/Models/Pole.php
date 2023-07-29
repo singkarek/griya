@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tiang extends Model
+class Pole extends Model
 {
     protected $connection   = 'db_coverage';
-    protected $table        = 'tiang';
+    protected $table        = 'pole';
     protected $guarded      = ['id'];
     use HasFactory;
 }
