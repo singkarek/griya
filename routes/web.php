@@ -21,8 +21,10 @@ Route::prefix('admin')->group( function (){
         Route::get('/placement', 'index')->name('admin.placement');
         Route::get('/placement/create', 'create')->name('admin.placement.create');
         Route::get('/placement/create/tiangs', 'ambiltiang');
+        Route::get('/placement/{id}/edit', 'edit');
         // Route Post Only //
         Route::post('/placement/store', 'store');
+        Route::post('/placement/edit', 'update');
     });
     Route::controller(TiangController::class)->group( function (){
         Route::get('/tiang', 'index')->name('admin.tiang');
@@ -43,4 +45,8 @@ Route::prefix('sales')->group( function (){
         // Route Post Only //
         Route::post('/create/customer', 'create');
     });
+});
+
+Route::get('/', function(){
+    return view('map');
 });

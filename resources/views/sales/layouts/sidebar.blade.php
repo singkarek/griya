@@ -11,7 +11,7 @@
       <li class="nav-item">
         <a class="nav-link {{ Request::is('sales/customer/*') ? 'active' : ''}}" href="{{ route('sales.index') }}">
           <span data-feather="user"></span>
-          Customer
+          Prospect
         </a>
       </li>
       <li class="nav-item">

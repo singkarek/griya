@@ -36,8 +36,8 @@
           <td >{{ $tiang->nama_tiang }}</td>
           <td >{{ $tiang->vendor }}</td>
           <td >{{ $tiang->tinggi }}</td>
-          <td > Rp {{  number_format( $tiang->harga, 0, ',', '.') }} </td>
-          <td >{{ $tiang->created_at }}</td>
+          <td > Rp {{ number_format( $tiang->harga, 0, ',', '.') }} </td>
+          <td >{{ $tiang->created_at->format('d M Y') }}</td>
         </tr>
         @endforeach
       </tbody>
