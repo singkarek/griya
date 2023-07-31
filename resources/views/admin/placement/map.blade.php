@@ -1,10 +1,15 @@
-@extends('admin.layouts.mainn')
+@extends('admin.layouts.main')
+
+@push('css')
+    {{-- css google map --}}
+    <link href="/css/map.css" rel="stylesheet">
+@endpush
 
 @section('container')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Data Placement</h1>
     </div>
-    <form method="post" action="/admin/placement/edit" autocomplete="">
+    <form method="post" action="/admin/placement/edit/koordinat" autocomplete="">
         {{-- @method('put') --}}
         @csrf
         <div class="row mb-2">
@@ -22,10 +27,7 @@
     </form>
 
     <div id="namamap" data='{{ $data->kode_area }} | {{ $data->nama_tempat }} | {{ $data->jenis_tempat }}' ></div>
-
     <div id="mapexist" lat={{ $data->lat }} lng={{ $data->lng }}></div>
-
-    
 @endsection
 
 @section('map')
@@ -41,70 +43,69 @@
 </script>
     
 <script>
-async function getLocation() {
-    const data_map  = document.querySelector('#mapexist');
-    var lat = data_map.getAttribute("lat");
-    var lng = data_map.getAttribute("lng");
-    // console.log(lat,lng)
- 
-    if(lat != 'lng='){
-        console.log("masuk")
-        return {"lat" : Number(lat), "long" : Number(lng)}
-    }
+    async function getLocation() {
+        const data_map  = document.querySelector('#mapexist');
+        var lat = data_map.getAttribute("lat");
+        var lng = data_map.getAttribute("lng");
+    
+        if(lat != 'lng='){
+            console.log("masuk")
+            return {"lat" : Number(lat), "long" : Number(lng)}
+        }
+            
+        try {
+            const position = await new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject);
+            });
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            return {"lat" : latitude, "long" : longitude}
+        } catch (error) {
+            console.error("Gagal mendapatkan lokasi: " + error.message);
+        }
         
-    try {
-        const position = await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
-        });
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
-        return {"lat" : latitude, "long" : longitude}
-    } catch (error) {
-        console.error("Gagal mendapatkan lokasi: " + error.message);
     }
-    
-}
 
-async function initMap() {
-    const nama_map  = document.querySelector('#namamap');
-    var nama = nama_map.getAttribute("data")
-    const f_lat  = document.querySelector('#lat');
-    const f_lng  = document.querySelector('#lng');
+    async function initMap() {
+        const nama_map  = document.querySelector('#namamap');
+        const nama = nama_map.getAttribute("data")
+        const f_lat  = document.querySelector('#lat');
+        const f_lng  = document.querySelector('#lng');
 
-    const data_koordinat = await getLocation()
-    // console.log(data_koordinat)
-    
-    const myLatlng = { lat: data_koordinat.lat, lng: data_koordinat.long };
-
-    const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 25,
-        center: myLatlng,
-    });
-
-    let infoWindow = new google.maps.InfoWindow({
-        content: nama,
-        position: myLatlng,
-    });
-
-    infoWindow.open(map);
-    
-    map.addListener("click", (mapsMouseEvent) => {
-    
-        infoWindow.close();
-    
-        infoWindow = new google.maps.InfoWindow({
-        position: mapsMouseEvent.latLng,
-        });
+        const data_koordinat = await getLocation()
+        // console.log(data_koordinat)
         
-        f_lat.value = mapsMouseEvent.latLng.toJSON().lat
-        f_lng.value = mapsMouseEvent.latLng.toJSON().lng
+        const myLatlng = { lat: data_koordinat.lat, lng: data_koordinat.long };
 
-        infoWindow.setContent( nama );
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 25,
+            center: myLatlng,
+        });
+
+        let infoWindow = new google.maps.InfoWindow({
+            content: nama,
+            position: myLatlng,
+        });
+
         infoWindow.open(map);
-    });
-}
+        
+        map.addListener("click", (mapsMouseEvent) => {
+        
+            infoWindow.close();
+        
+            infoWindow = new google.maps.InfoWindow({
+            position: mapsMouseEvent.latLng,
+            });
+            
+            f_lat.value = mapsMouseEvent.latLng.toJSON().lat
+            f_lng.value = mapsMouseEvent.latLng.toJSON().lng
 
-window.initMap = initMap;
+            infoWindow.setContent( nama );
+            infoWindow.open(map);
+        });
+    }
+
+    window.initMap = initMap;
 </script> 
 
 
