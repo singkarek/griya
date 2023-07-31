@@ -20,28 +20,28 @@
       <tr>
         <th scope="row" >Foto KTP <span data-feather="chevrons-right"></span></i></th>
         <td><input class="form-control" type="file" id="formFile"></td>
-        <td><a href="{{ route('sales.create') }}" class="btn btn-primary mb-3">Upload</a></td>
+        {{-- <td><a href="{{ route('sales.create') }}" class="btn btn-primary mb-3">Upload</a></td> --}}
       </tr>
       <tr>
         <th scope="row">Foto Rumah</th>
         <td><input class="form-control" type="file" id="formFile"></td>
-        <td><a href="{{ route('sales.create') }}" class="btn btn-primary mb-3">Upload</a></td>
+        {{-- <td><a href="{{ route('sales.create') }}" class="btn btn-primary mb-3">Upload</a></td> --}}
       </tr>
       <tr>
         <th scope="row">Pilih koordinat rumah</th>
-        <td><a href="{{ route('sales.create') }}" class="btn btn-primary mb-3">Chose</a></td>
+        {{-- <td><a href="{{ route('sales.create') }}" class="btn btn-primary mb-3">Chose</a></td> --}}
       </tr>
       <th scope="row">Pilih ODP</th>
-      <td><a href="{{ route('sales.create') }}" class="btn btn-primary mb-3">Chose</a></td>
+      {{-- <td><a href="{{ route('sales.create') }}" class="btn btn-primary mb-3">Chose</a></td> --}}
       </tr>
       <tr>
         <th scope="row">Buat jalur</th>
-        <td><a href="{{ route('sales.create') }}" class="btn btn-primary mb-3">Chose</a></td>
+        {{-- <td><a href="{{ route('sales.create') }}" class="btn btn-primary mb-3">Chose</a></td> --}}
       </tr>
     </tbody>
   </table>
 
-  <button type="submit" class="btn btn-primary">Ajukan Pemasangan</button>
+  <button type="submit" class="btn btn-primary">Update Data</button>
 
 </div>
 

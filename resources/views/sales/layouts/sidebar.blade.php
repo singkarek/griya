@@ -9,13 +9,13 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('sales/customer/*') ? 'active' : ''}}" href="{{ route('sales.index') }}">
+        <a class="nav-link {{ Request::is('sales/prospect*') ? 'active' : ''}}" href="{{ route('sales.prospect.index') }}">
           <span data-feather="user"></span>
           Prospect
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('sales/antrian') ? 'active' : ''}}" href="{{ route('sales.antrian') }}">
+        <a class="nav-link" href="{{ route('sales.antrian') }}">
           <span data-feather="chevrons-right"></span>
           Antrian
         </a>

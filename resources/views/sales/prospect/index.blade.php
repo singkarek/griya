@@ -15,7 +15,7 @@
 
 
 <div class="table-responsive col-lg-9">
-    <a href="{{ route('sales.create') }}" class="btn btn-primary mb-3">Customer Baru</a>
+    <a href="{{ route('sales.prospect.create') }}" class="btn btn-primary mb-3">Customer Baru</a>
     <table class="table table-striped table-sm">
       <thead>
         <tr>
@@ -34,7 +34,7 @@
               <td>{{ $customer->alamat }}</td>
               <td>{{ $customer->no_tlp }}</td>
               <td>
-                @if($customer->foto_ktp == null)
+                {{-- @if($customer->foto_ktp == null)
                 <a href="/sales/customer/{{ $customer->id }}/melengkapi" class="badge btn-success"><span data-feather="edit"></span> Foto KTP</a>
                 @endif
                 @if($customer->foto_ktp != null && $customer->foto_rumah == null)
@@ -45,11 +45,11 @@
                 @endif
                 @if($customer->lat != null && $customer->id_dp == null)
                 <a href="/sales/customer/{{ $customer->id }}/melengkapi" class="badge btn-success"><span data-feather="edit"></span> Pilih ODP</a>
-                @endif
+                @endif --}}
  
                 
                 
-                <a href="/sales/customer/{{ $customer->id }}/melengkapi" class="badge btn-warning"><span data-feather="edit"></span> Detail</a>
+                <a href="/sales/prospect/{{ $customer->id }}/detail" class="badge btn-warning"><span data-feather="edit"></span> Detail</a>
                 {{-- <form action="/dashboard/posts/" method="post" class="d-inline">
                     @method('delete')
                     @csrf

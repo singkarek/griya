@@ -7,6 +7,16 @@
     <h1 class="h2">Create Customer</h1>
 </div>
 
+@if ($errors->any())
+  <div class="alert alert-danger col-lg-9">
+      <ul>
+          @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+          @endforeach
+      </ul>
+  </div>
+@endif
+
 @if(session()->has('success'))
     <div class="alert alert-success col-lg-9" role="alert">
         {{ session('success') }}
@@ -15,7 +25,7 @@
 
 <div class="col-lg-9">
 
-<form method="post" action="/sales/create/customer" autocomplete="">
+<form method="post" action="/sales/prospect/store" autocomplete="">
     @csrf
 
         <div class="mb-2">
@@ -78,8 +88,8 @@
         </div>
 
         <div class="mb-3 ">
-            <label for="id_paket_layanan" class="h6 form-label @error('id_paket_layanan') is-invalid @enderror" >Paket layanan</label>
-            <select class="form-select" name="id_paket_layanan">
+            <label for="paket_layanan_id" class="h6 form-label @error('paket_layanan_id') is-invalid @enderror" >Paket layanan</label>
+            <select class="form-select" name="paket_layanan_id">
               @foreach ($layananpakets as $paket)
               <option value="{{ $paket->id }}" >{{ $paket->nama_layanan}} | Rp {{ number_format( $paket->harga, 0, ',', '.') }}</option>         
               @endforeach
