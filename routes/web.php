@@ -13,11 +13,7 @@ Route::prefix('sales')->group( function (){
     Route::controller(SalesController::class)->group( function (){
         Route::get('/', 'index')->name('sales');
         
-        
-        Route::get('/customer/{customer}/edit', 'edit')->name('sales.edit');
-
         Route::get('/antrian', 'antrian')->name('sales.antrian');
-
     });
 
     Route::controller(ProspectController::class)->group( function (){
@@ -46,7 +42,7 @@ Route::prefix('admin')->group( function (){
         Route::get('/placement/{id}/edit', 'edit');
         // Route Post Only //
         Route::post('/placement/store', 'store');
-        Route::post('/placement/edit', 'update');
+        Route::post('/placement/edit/koordinat', 'update_koordinat');
     });
     Route::controller(TiangController::class)->group( function (){
         Route::get('/tiang', 'index')->name('admin.tiang');

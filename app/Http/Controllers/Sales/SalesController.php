@@ -19,8 +19,4 @@ class SalesController extends Controller
         return view('sales.prospect.antrian');
     }
 
-    public function edit(Sales $customer)
-    {
-        dd($customer);
-    }
 }

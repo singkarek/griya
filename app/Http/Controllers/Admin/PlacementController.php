@@ -63,7 +63,7 @@ class PlacementController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function update_koordinat(Request $request)
     {  
         if($request->lat == 'latitude'){
             return redirect('/admin/placement')->with('error', 'Data Koordinat kosong !');
