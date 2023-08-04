@@ -1,4 +1,4 @@
-@extends('admin.layouts.main')
+@extends('sales.layouts.main')
 
 @push('css')
     {{-- css google map --}}
@@ -9,29 +9,25 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Data Placement</h1>
     </div>
-    <form method="post" action="/admin/placement/edit/koordinat" autocomplete="">
-        {{-- @method('put') --}}
+    <form method="post" action='/sales/prospect/updateKoordinat' autocomplete="">
+        @method('put')
         @csrf
         <div class="row mb-2">
             <div class="col">
-                <input type="text" class="form-control" value="latitude" id="lat" name='lat' required hidden>
+                <input type="text" class="form-control" value="latitude" id="lat" name='lat' required>
             </div>
             <div class="col">
-                <input type="text" class="form-control" value="longtitude" id="lng" name='lng' required hidden>
-                <input type="text" value={{ $data->id }} name='id' required hidden>
+                <input type="text" class="form-control" value="longtitude" id="lng" name='lng' required>
+                <input type="text" value={{ $prospect->id }} name='id' required hidden>
             </div>
-            <div class="col">
-                <input type="text" class="form-control" value="alamat" id="alamat" name='alamat' required >
-            </div>
-
             <div class="col">
                 <button type="submitt" class="btn btn-primary">Simpan</button>
             </div>
         </div>
     </form>
 
-    <div id="namamap" data='{{ $data->kode_area }} | {{ $data->nama_tempat }} | {{ $data->jenis_tempat }}' ></div>
-    <div id="mapexist" lat={{ $data->lat }} lng={{ $data->lng }}></div>
+    <div id="namamap" data='{{ $prospect->nama }} | {{ $prospect->alamat }}' ></div>
+    <div id="mapexist" lat={{ $prospect->lat }} lng={{ $prospect->lng }}></div>
 @endsection
 
 @section('map')
@@ -75,7 +71,6 @@
         const nama = nama_map.getAttribute("data")
         const f_lat  = document.querySelector('#lat');
         const f_lng  = document.querySelector('#lng');
-        const alamat  = document.querySelector('#alamat');
 
         const data_koordinat = await getLocation()
         // console.log(data_koordinat)
@@ -83,7 +78,7 @@
         const myLatlng = { lat: data_koordinat.lat, lng: data_koordinat.long };
 
         const map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 25,
+            zoom: 20,
             center: myLatlng,
         });
 
@@ -93,7 +88,7 @@
         });
 
         infoWindow.open(map);
-        
+
         map.addListener("click", (mapsMouseEvent) => {
         
             infoWindow.close();
@@ -107,29 +102,35 @@
 
             infoWindow.setContent( nama );
             infoWindow.open(map);
-
-            const geocoder = new google.maps.Geocoder();
-
-            geocoder.geocode({ location: mapsMouseEvent.latLng }, (results, status) => {
-            if (status === "OK") {
-                if (results[0]) {
-                    alamat.value = results[0].formatted_address
-                console.log("Alamat: ", results[0]);
-                } else {
-                console.log("Tidak ada hasil.");
-                }
-            } else {
-                console.error("Geocode gagal: ", status);
-            }
-            });
         });
-
-
-
     }
 
     window.initMap = initMap;
 </script> 
+
+{{-- <script>
+    function initMap() {
+      const mapOptions = {
+        center: { lat: 40.7128, lng: -74.0060 }, // Set your map center here
+        zoom: 10,
+      };
+
+      const map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+      // Coordinates of the two points
+      const point1 = new google.maps.LatLng(40.7128, -74.0060);
+      const point2 = new google.maps.LatLng(34.0522, -118.2437);
+
+      // Calculate the distance between the two points
+      const distanceInMeters = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
+
+      // Convert distance to kilometers (optional)
+      const distanceInKm = distanceInMeters / 1000;
+
+      console.log("Distance in meters: " + distanceInMeters);
+      console.log("Distance in kilometers: " + distanceInKm);
+    }
+</script> --}}
 
 
 

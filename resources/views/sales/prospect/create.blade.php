@@ -28,9 +28,18 @@
 <form method="post" action="/sales/prospect/store" autocomplete="">
     @csrf
 
+          <div class="mb-3 ">
+            <label for="metode" class="h6 form-label @error('metode') is-invalid @enderror" >Customer mendapatkan info dari</label>
+            <select class="form-select" name="metode">
+              <option value="ketemu" >Ketemu</option>         
+              <option value="whatsapp" >WhatsApp</option>         
+              {{-- <option selected>Pilih Metode</option> --}}
+            </select>
+        </div>
+
         <div class="mb-2">
-          <label for="nama" class="form-label">Nama Customer</label>
-          <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name='nama' required autofocus value="{{ 
+          <label for="nama" class="h6 form-label">Nama Customer</label>
+          <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name='nama' required value="{{ 
            old('nama') }}">
           @error('nama')
               <div class="ivalid-feedback">
@@ -40,7 +49,7 @@
         </div>
 
         <div class="mb-2">
-            <label for="alamat" class="form-label">Alamat Customer</label>
+            <label for="alamat" class="h6 form-label">Alamat Customer</label>
             <input type="text" class="form-control @error('alamat') is-invalid @enderror" id="alamat" name='alamat' required value="{{ 
              old('alamat') }}">
             @error('alamat')
@@ -53,7 +62,7 @@
         <div class="row mb-2">
 
             <div class="col">
-                <label for="rt" class="form-label">RT</label>
+                <label for="rt" class="h6 form-label">RT</label>
                 <input type="text" class="form-control @error('rt') is-invalid @enderror" id="rt" name='rt' required value="{{ 
                  old('rt') }}">
                 @error('rt')
@@ -64,7 +73,7 @@
               </div>
 
               <div class="col">
-                <label for="rw" class="form-label">RW</label>
+                <label for="rw" class="h6 form-label">RW</label>
                 <input type="text" class="form-control @error('rw') is-invalid @enderror" id="rw" name='rw' required value="{{ 
                  old('rw') }}">
                 @error('rw')
@@ -77,7 +86,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="no_tlp" class="form-label">No Tlp</label>
+            <label for="no_tlp" class="h6 form-label">No Tlp</label>
             <input type="number" class="form-control @error('no_tlp') is-invalid @enderror" id="no_tlp" name='no_tlp' required value="{{ 
                 old('no_tlp') }}">
             @error('no_tlp')

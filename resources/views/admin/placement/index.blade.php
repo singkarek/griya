@@ -29,7 +29,7 @@
   
  
 
-  <a href="{{ route('admin.placement.create') }}" class="btn btn-primary mb-3">Buat Placement Baru</a>
+  {{-- <a href="{{ route('admin.placement.create') }}" class="btn btn-primary mb-3">Buat Placement Baru</a> --}}
 
   
   <div class="table-responsive col-lg-9">
@@ -39,7 +39,7 @@
           <th scope="col">#</th>
           <th scope="col">Nama Area</th>
           <th scope="col">Kode Area</th>
-          <th scope="col">Nama Area</th>
+          <th scope="col">Place</th>
           <th scope="col">Jenis Tempat</th>
           <th scope="col">Action</th>
 
@@ -53,12 +53,21 @@
           <td>{{ $place->nama_area }}</td>
           <td>{{ $place->kode_area }}</td>
           <td>{{ $place->nama_tempat }}</td>
-          <td>{{ $place->jenis_tempat }}</td>
           <td>
-            @if ($place->lat == "")
-              <a href='/admin/placement/{{ $place->id }}/edit' class="badge btn-danger"><span data-feather="edit"></span> Add Koordinat</a>
+            @if($place->jenis_tempat == null)
+              -
             @else
-            <a href='/admin/placement/{{ $place->id }}/edit' class="badge btn-warning"><span data-feather="edit"></span> Edit</a>
+              {{ $place->jenis_tempat }}
+            @endif
+          </td>
+          <td>
+            @if($place->jenis_tempat == null)
+            <a href='/admin/placement/{{ $place->id }}/edit' class="badge btn-danger"><span data-feather="edit"></span> Add Tempat</a>
+            @endif
+            @if ($place->lat == null)
+              <a href='/admin/placement/{{ $place->id }}/edit/koordinat' class="badge btn-danger"><span data-feather="edit"></span> Add Koordinat</a>
+            @else
+            <a href='/admin/placement/{{ $place->id }}/edit/koordinat' class="badge btn-warning"><span data-feather="edit"></span> Edit Koordinat</a>
             @endif
           </td>
         </tr>
@@ -66,5 +75,7 @@
       </tbody>
     </table>
   </div>
+
+{{ $places }}
 
 @endsection

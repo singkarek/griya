@@ -4,55 +4,78 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AreaController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\TiangController;
+use App\Http\Controllers\Sales\SalesController;
+
+use App\Http\Controllers\Admin\BackboneController;
+use App\Http\Controllers\Sales\ProspectController;
 use App\Http\Controllers\Admin\PlacementController;
 
-use App\Http\Controllers\Sales\SalesController;
-use App\Http\Controllers\Sales\ProspectController;
-
-Route::prefix('sales')->group( function (){
+Route::prefix('sales')->name('sales.')->group( function (){
     Route::controller(SalesController::class)->group( function (){
-        Route::get('/', 'index')->name('sales');
-        
-        Route::get('/antrian', 'antrian')->name('sales.antrian');
+        Route::get('/', 'index')->name('index');
+        Route::get('/antrian', 'antrian')->name('antrian');
     });
 
-    Route::controller(ProspectController::class)->group( function (){
-        Route::get('/prospect', 'index')->name('sales.prospect.index');
-        Route::get('/prospect/create', 'create')->name('sales.prospect.create');
-        Route::get('/prospect/{id}/detail', 'detail')->name('sales.prospect.detail');
-        // Route Post Only //
-        Route::post('/prospect/store', 'store');
+    Route::prefix('prospect')->name('prospect.')->group( function (){
+        Route::controller(ProspectController::class)->group( function (){
+            // Route Get Only //
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/{id}/detail', 'detail')->name('detail');
+            Route::get('/updateKoordinat/{id}/edit', 'editKoordinat')->name('editKoordinat');
+            // Route Post Only //
+            Route::post('/store', 'store');
+            // Route Put Only //
+            Route::put('/updateKoordinat', 'updateKoordinat');
+
+        });
     });
 });
 
-Route::prefix('admin')->group( function (){
+Route::prefix('admin')->name('admin.')->group( function (){
     Route::controller(AdminController::class)->group( function (){
-        Route::get('/', 'index')->name('admin');
+        Route::get('/', 'index')->name('index');
     });
-    Route::controller(AreaController::class)->group( function (){
-        Route::get('/area', 'index')->name('admin.area');
-        Route::get('/area/create', 'create')->name('area.create');
-        // Route Post Only //
-        Route::post('/create/area', 'store');
+    Route::prefix('backbone')->name('backbone.')->group( function (){
+        Route::controller(BackboneController::class)->group( function (){
+            Route::get('/', 'index')->name('index');
+        });
     });
-    Route::controller(PlacementController::class)->group( function (){
-        Route::get('/placement', 'index')->name('admin.placement');
-        Route::get('/placement/create', 'create')->name('admin.placement.create');
-        Route::get('/placement/create/tiangs', 'ambiltiang');
-        Route::get('/placement/{id}/edit', 'edit');
-        // Route Post Only //
-        Route::post('/placement/store', 'store');
-        Route::post('/placement/edit/koordinat', 'update_koordinat');
+    Route::prefix('area')->name('area.')->group( function (){
+        Route::controller(AreaController::class)->group( function (){
+            // Route Get Only //
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            // Route Post Only //
+            Route::post('/create', 'store');
+        });
     });
-    Route::controller(TiangController::class)->group( function (){
-        Route::get('/tiang', 'index')->name('admin.tiang');
-        Route::get('/tiang/create', 'create')->name('admin.tiang.create');
-        // Route Post Only //
-        Route::post('/tiang/store', 'store');
+    Route::prefix('placement')->name('placement.')->group( function (){
+        Route::controller(PlacementController::class)->group( function (){
+            // Route Get Only //
+            Route::get('/{id}', 'index')->name('index');
+            // Route::get('/create', 'create')->name('create');
+            // Route::get('/create/tiangs', 'ambiltiang');
+            Route::get('/{id}/edit/koordinat', 'editKoordinat');
+            // Route Post Only //
+            // Route::post('/store', 'store');
+            Route::post('/edit/koordinat', 'updateKoordinat');
+        });
+    });
+    Route::prefix('tiang')->name('tiang.')->group( function (){
+        Route::controller(TiangController::class)->group( function (){
+            // Route Get Only //
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/transfertiang', 'transfertiang')->name('transfertiang');
+            // Route Post Only //
+            Route::post('/store', 'store');
+            Route::post('/tes', 'tes');
+        });
     });
 });
 
 
-Route::get('/', function(){
-    return view('map');
-});
+// Route::get('/', function(){
+//     return view('map');
+// });

@@ -81,7 +81,6 @@
         fetch('/admin/placement/create/tiangs')
           .then( response => response.json())
           .then( item =>  {
-
             item.tiang.forEach(item => {
               var optionElement = document.createElement('option');
               optionElement.value = item.id

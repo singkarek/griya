@@ -20,23 +20,22 @@
           <th scope="col">#</th>
           <th scope="col">Nama Area</th>
           <th scope="col">Kode Area</th>
-          <th scope="col">Placement</th>
-          <th scope="col">Spliter</th>
+          <th scope="col">Action</th>
 
         </tr>
       </thead>
       <tbody>
-        @foreach ($areas as $area )
+        {{-- @foreach ($areas as $area )
         <tr>
           <td>{{ $loop->iteration }}</td>
           <td>{{ $area->nama_area }}</td>
           <td>{{ $area->kode_area }}</td>
-          <td><a href="/admin/placement/{{ $area->id }}" class="text">Chose</a></td>
-          
         </tr>
-        @endforeach
+        @endforeach --}}
       </tbody>
     </table>
   </div>
+
+{{ $areas }}
 
 @endsection

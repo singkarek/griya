@@ -15,7 +15,7 @@
 
 <div class="col-lg-9">
 
-<form method="post" action="/admin/create/area" autocomplete="">
+<form method="post" action="/admin/area/create" autocomplete="">
     @csrf
 
         <div class="mb-2">
@@ -31,7 +31,7 @@
 
         <div class="mb-2  col-lg-4">
             <label for="kode_area" class="form-label">Kode Area</label>
-            <input maxlength="5" minlength="5" type="text" class="form-control @error('kode_area') is-invalid @enderror" id="kode_area" name='kode_area' required value="{{ 
+            <input maxlength="4" minlength="4" type="text" class="form-control @error('kode_area') is-invalid @enderror" id="kode_area" name='kode_area' required value="{{ 
              old('kode_area') }}">
             @error('kode_area')
                 <div class="ivalid-feedback">

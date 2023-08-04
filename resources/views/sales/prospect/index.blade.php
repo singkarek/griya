@@ -2,17 +2,31 @@
 
 @section('container')
 
-
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Data Customers Prospects</h1>
   </div>
+
+@if ($errors->any())
+<div class="alert alert-danger col-lg-9">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
+@if(session()->has('error'))
+  <div class="alert alert-danger col-lg-9" role="alert">
+      {{ session('error') }}
+  </div>
+@endif
 
 @if(session()->has('success'))
     <div class="alert alert-success col-lg-9" role="alert">
         {{ session('success') }}
     </div>
 @endif
-
 
 <div class="table-responsive col-lg-9">
     <a href="{{ route('sales.prospect.create') }}" class="btn btn-primary mb-3">Customer Baru</a>
@@ -34,18 +48,17 @@
               <td>{{ $customer->alamat }}</td>
               <td>{{ $customer->no_tlp }}</td>
               <td>
-                {{-- @if($customer->foto_ktp == null)
-                <a href="/sales/customer/{{ $customer->id }}/melengkapi" class="badge btn-success"><span data-feather="edit"></span> Foto KTP</a>
-                @endif
-                @if($customer->foto_ktp != null && $customer->foto_rumah == null)
-                <a href="/sales/customer/{{ $customer->id }}/melengkapi" class="badge btn-success"><span data-feather="edit"></span> Foto Rumah</a>
+                @if($customer->foto_ktp == null)
+                <a href="/sales/prospect/{{ $customer->id }}/update_fotoktp" class="badge btn-success"><span data-feather="edit"></span> Foto KTP</a>
+                @elseif($customer->foto_ktp != null && $customer->foto_rumah == null)
+                <a href="/sales/prospect/{{ $customer->id }}/update_fotorumah" class="badge btn-success"><span data-feather="edit"></span> Foto Rumah</a>
                 @endif
                 @if($customer->foto_rumah != null && $customer->lat == null)
-                <a href="/sales/customer/{{ $customer->id }}/melengkapi" class="badge btn-success"><span data-feather="edit"></span> Koordinat Rumah</a>
+                <a href="{{ route('sales.prospect.editKoordinat', $customer->id) }}" class="badge btn-success"><span data-feather="edit"></span> Koordinat Rumah</a>
                 @endif
                 @if($customer->lat != null && $customer->id_dp == null)
-                <a href="/sales/customer/{{ $customer->id }}/melengkapi" class="badge btn-success"><span data-feather="edit"></span> Pilih ODP</a>
-                @endif --}}
+                <a href="/sales/prospect/{{ $customer->id }}/update_dp" class="badge btn-success"><span data-feather="edit"></span> Pilih ODP</a>
+                @endif
  
                 
                 
@@ -61,8 +74,6 @@
       </tbody>
     </table>
   </div>
-
-
 
 @endsection
 

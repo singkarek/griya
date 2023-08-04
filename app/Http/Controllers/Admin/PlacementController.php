@@ -10,51 +10,50 @@ use App\Http\Controllers\Controller;
 
 class PlacementController extends Controller
 {
-    public function index()
+    // $data = Placement::Join('coverage_areas', 'placements.area_id', '=' , 'coverage_areas.id')->get();
+    // $data = 
+    public function index($id)
     {
-        // $data = Placement::Join('coverage_areas', 'placements.area_id', '=' , 'coverage_areas.id')->get();
-        $data = CoverageArea::Join('placements', 'coverage_areas.id', '=' , 'placements.area_id')->get();
-
-        // dd($data);
+        $data = CoverageArea::Join('placements', 'coverage_areas.id', '=' , 'placements.area_id')->WHERE('placements.area_id',$id)->get();
         return view('admin.placement.index',[
             "places" => $data
         ]);
     }
 
-    public function create()
-    {
+    // public function create()
+    // {
     
-        return view('admin.placement.create',[
-            "areas" => CoverageArea::all()
-        ]);
-    }
+    //     return view('admin.placement.create',[
+    //         "areas" => CoverageArea::all()
+    //     ]);
+    // }
 
 
-    public function store(Request $request)
-    {
-        $validateData = $request->validate([
-            'area_id' => 'required',
-            'jenis_tempat' => 'required',
-            'tiang_id'=> 'required'
-        ]);
+    // public function store(Request $request)
+    // {
+    //     $validateData = $request->validate([
+    //         'area_id' => 'required',
+    //         'jenis_tempat' => 'required',
+    //         'tiang_id'=> 'required'
+    //     ]);
 
-        if($validateData['jenis_tempat'] == "Tiang Sendiri" && $validateData['tiang_id'] == 0){
-            return redirect('/admin/placement/create')->with('error', 'Data tiang kosong !');
-        };
+    //     if($validateData['jenis_tempat'] == "Tiang Sendiri" && $validateData['tiang_id'] == 0){
+    //         return redirect('/admin/placement/create')->with('error', 'Data tiang kosong !');
+    //     };
 
-        $id_area = $validateData['area_id'];
+    //     $id_area = $validateData['area_id'];
 
-        $hasil_cover = Placement::where('area_id',$id_area)->count()+1;
-        $namatempat = 'P-'.$hasil_cover;
+    //     $hasil_cover = Placement::where('area_id',$id_area)->count()+1;
+    //     $namatempat = 'P-'.$hasil_cover;
 
-        $validateData['nama_tempat'] = $namatempat;
+    //     $validateData['nama_tempat'] = $namatempat;
 
-        Placement::create($validateData);
+    //     Placement::create($validateData);
 
-        return redirect('/admin/placement')->with('success', 'Data berhasil ditambahkan !');
-    }
+    //     return redirect('/admin/placement')->with('success', 'Data berhasil ditambahkan !');
+    // }
 
-    public function edit(Placement $id)
+    public function editKoordinat(Placement $id)
     {
         $data = CoverageArea::Join('placements', 'coverage_areas.id', '=' , 'placements.area_id')->where('placements.id',$id->id)->get();
         // dd($data);
@@ -63,7 +62,7 @@ class PlacementController extends Controller
         ]);
     }
 
-    public function update_koordinat(Request $request)
+    public function updateKoordinat(Request $request)
     {  
         if($request->lat == 'latitude'){
             return redirect('/admin/placement')->with('error', 'Data Koordinat kosong !');
@@ -78,17 +77,17 @@ class PlacementController extends Controller
         return redirect('/admin/placement')->with('success', 'Data berhasil ditambahkan !');
     }
 
-    public function map()
-    {
-        return view('admin.placement.map');
-    }
+    // public function map()
+    // {
+    //     return view('admin.placement.map');
+    // }
 
-    public function ambiltiang()
-    {
-        $place = Placement::select('tiang_id')->get();
-        $result_pole = Pole::whereNotIn('id', $place)->get();
-        return response()->json(['tiang' => $result_pole]);
-    }
+    // public function ambiltiang()
+    // {
+    //     $place = Placement::select('tiang_id')->get();
+    //     $result_pole = Pole::whereNotIn('id', $place)->get();
+    //     return response()->json(['tiang' => $result_pole]);
+    // }
 
 
 }
