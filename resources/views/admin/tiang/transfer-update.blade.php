@@ -46,7 +46,7 @@
         
         <div class="row mb-2 mt-4">
             <div class="col-md-2">
-                <button type="button" class="btn btn-success" id="addButton">+ add tiang</button>
+                <button type="button" class="btn btn-success" id="addButton">+ Add tiang</button>
             </div>
             <div class="col">
                 <button type="submit" class="btn btn-primary">Submit</button>

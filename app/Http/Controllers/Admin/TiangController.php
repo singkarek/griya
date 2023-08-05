@@ -72,7 +72,7 @@ class TiangController extends Controller
         $result_tiang = Pole::where('area_id', null)->get();
         $areas = CoverageArea::all();
 
-        return view('admin.tiang.tranfer-update', [
+        return view('admin.tiang.transfer-update', [
             'tiangs' => $result_tiang,
             'areas' => $areas
         ]);

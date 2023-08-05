@@ -2,7 +2,7 @@
 
 @section('container')
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Data Placement</h1>
+    <h1 class="h2">Data Placement - {{ $places[0]['nama_area'] }} - {{ $places[0]['kode_area'] }}</h1>
   </div>
 
   @if ($errors->any())
@@ -26,10 +26,6 @@
         {{ session('success') }}
     </div>
   @endif
-  
- 
-
-  {{-- <a href="{{ route('admin.placement.create') }}" class="btn btn-primary mb-3">Buat Placement Baru</a> --}}
 
   
   <div class="table-responsive col-lg-9">
@@ -37,8 +33,6 @@
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Nama Area</th>
-          <th scope="col">Kode Area</th>
           <th scope="col">Place</th>
           <th scope="col">Jenis Tempat</th>
           <th scope="col">Action</th>
@@ -50,8 +44,6 @@
         @foreach ($places as $place )
         <tr>
           <td>{{ $loop->iteration }}</td>
-          <td>{{ $place->nama_area }}</td>
-          <td>{{ $place->kode_area }}</td>
           <td>{{ $place->nama_tempat }}</td>
           <td>
             @if($place->jenis_tempat == null)
@@ -62,12 +54,14 @@
           </td>
           <td>
             @if($place->jenis_tempat == null)
-            <a href='/admin/placement/{{ $place->id }}/edit' class="badge btn-danger"><span data-feather="edit"></span> Add Tempat</a>
+              <a href='/admin/placement/{{ $place->id }}/create/tempat' class="badge btn-danger"><span data-feather="plus-square"></span> Tempat</a>
+              @else
+              <a href='/admin/placement/{{ $place->id }}/edit/tempat' class="badge btn-warning"><span data-feather="edit"></span> Tempat</a>
             @endif
             @if ($place->lat == null)
-              <a href='/admin/placement/{{ $place->id }}/edit/koordinat' class="badge btn-danger"><span data-feather="edit"></span> Add Koordinat</a>
+              <a href='/admin/placement/{{ $place->id }}/edit/koordinat' class="badge btn-danger"><span data-feather="plus-square"></span> Koordinat</a>
             @else
-            <a href='/admin/placement/{{ $place->id }}/edit/koordinat' class="badge btn-warning"><span data-feather="edit"></span> Edit Koordinat</a>
+            <a href='/admin/placement/{{ $place->id }}/edit/koordinat' class="badge btn-warning"><span data-feather="edit"></span> Koordinat</a>
             @endif
           </td>
         </tr>
@@ -75,7 +69,5 @@
       </tbody>
     </table>
   </div>
-
-{{ $places }}
-
+{{-- {{ $place }} --}}
 @endsection

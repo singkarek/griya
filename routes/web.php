@@ -55,11 +55,12 @@ Route::prefix('admin')->name('admin.')->group( function (){
             // Route Get Only //
             Route::get('/{id}', 'index')->name('index');
             // Route::get('/create', 'create')->name('create');
-            // Route::get('/create/tiangs', 'ambiltiang');
+            Route::get('/tiangs/{area}/{type}', 'getTiang');
             Route::get('/{id}/edit/koordinat', 'editKoordinat');
+            Route::get('/{id}/{type}/tempat', 'createTempat');
             // Route Post Only //
-            // Route::post('/store', 'store');
             Route::post('/edit/koordinat', 'updateKoordinat');
+            Route::post('/edit/tempat', 'updateTempat');
         });
     });
     Route::prefix('tiang')->name('tiang.')->group( function (){

@@ -7,24 +7,21 @@
 
 @section('container')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Data Placement</h1>
+        <h1 class="h2">Koordinat - {{ $data->nama_area }} - {{ $data->nama_tempat }}</h1>
     </div>
     <form method="post" action="/admin/placement/edit/koordinat" autocomplete="">
         {{-- @method('put') --}}
         @csrf
         <div class="row mb-2">
             <div class="col">
-                <input type="text" class="form-control" value="latitude" id="lat" name='lat' required hidden>
+                <input type="text" class="form-control" value="{{ $data->alamat }}" id="alamat" name='alamat' required >
             </div>
+            <input type="text" class="form-control" value="longtitude" id="lng" name='lng' 
+            required hidden>
+            <input type="text" value={{ $data->id }} name='id' required hidden>
+            <input type="text" value={{ $data->area_id }} name='area_id' required hidden>
             <div class="col">
-                <input type="text" class="form-control" value="longtitude" id="lng" name='lng' required hidden>
-                <input type="text" value={{ $data->id }} name='id' required hidden>
-            </div>
-            <div class="col">
-                <input type="text" class="form-control" value="alamat" id="alamat" name='alamat' required >
-            </div>
-
-            <div class="col">
+            <input type="text" class="form-control" value="latitude" id="lat" name='lat' required hidden>
                 <button type="submitt" class="btn btn-primary">Simpan</button>
             </div>
         </div>
@@ -32,6 +29,7 @@
 
     <div id="namamap" data='{{ $data->kode_area }} | {{ $data->nama_tempat }} | {{ $data->jenis_tempat }}' ></div>
     <div id="mapexist" lat={{ $data->lat }} lng={{ $data->lng }}></div>
+    {{-- {{ $data }} --}}
 @endsection
 
 @section('map')
@@ -114,7 +112,7 @@
             if (status === "OK") {
                 if (results[0]) {
                     alamat.value = results[0].formatted_address
-                console.log("Alamat: ", results[0]);
+                // console.log("Alamat: ", results[0]);
                 } else {
                 console.log("Tidak ada hasil.");
                 }
