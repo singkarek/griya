@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Area;
 
 use App\Models\Pole;
 use App\Models\Placement;
@@ -8,14 +8,14 @@ use App\Models\CoverageArea;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class PlacementController extends Controller
+class TiangAreaController extends Controller
 {
     // $data = Placement::Join('coverage_areas', 'placements.area_id', '=' , 'coverage_areas.id')->get();
     // $data = 
     public function index($id)
     {
         $data = CoverageArea::Join('placements', 'coverage_areas.id', '=' , 'placements.area_id')->WHERE('placements.area_id',$id)->get();
-        return view('admin.placement.index',[
+        return view('admin.area.tiang.index',[
             "places" => $data
         ]);
     }
@@ -29,7 +29,7 @@ class PlacementController extends Controller
 
        
         if($validateData['jenis_tempat'] == "Tiang Sendiri" && $validateData['tiang_id'] == 0){
-            return redirect('/admin/placement/'.$request->area_id)->with('error', 'Data tiang kosong !');
+            return redirect('/admin/area/tiang/'.$request->area_id)->with('error', 'Data tiang kosong !');
         };
                
         if($validateData['jenis_tempat'] == "Tiang Sendiri"){
@@ -44,7 +44,7 @@ class PlacementController extends Controller
         Placement::where('id', $request->id)
         ->update($validateData);
 
-        return redirect('/admin/placement/'.$request->area_id)->with('success', 'Data berhasil ditambahkan !');
+        return redirect('/admin/area/tiang/'.$request->area_id)->with('success', 'Data berhasil ditambahkan !');
     }
 
     public function createTempat($id, $type)
@@ -55,7 +55,7 @@ class PlacementController extends Controller
         // dd($cover_area);
         $data = CoverageArea::Join('placements', 'coverage_areas.id', '=' , 'placements.area_id')->WHERE('placements.id',$id)->get();
 
-        return view('admin.placement.tempat-create',[
+        return view('admin.area.tiang.tiang-update',[
             'place' => $data,
             'type' => $type
         ]);
@@ -64,7 +64,7 @@ class PlacementController extends Controller
     public function editKoordinat(Placement $id)
     {
         $data = CoverageArea::Join('placements', 'coverage_areas.id', '=' , 'placements.area_id')->where('placements.id',$id->id)->get();
-        return view('admin.placement.map-update',[
+        return view('admin.area.tiang.map-update',[
             'data' => $data[0]
         ]);
     }
@@ -73,7 +73,7 @@ class PlacementController extends Controller
     {  
 
         if($request->lat == 'latitude'){
-            return redirect('/admin/placement/'.$request->area_id)->with('error', 'Data Koordinat kosong !');
+            return redirect('/admin/area/tiang/'.$request->area_id)->with('error', 'Data Koordinat kosong !');
         } 
         $validateData = $request->validate([
             'lat' => 'required',
@@ -84,13 +84,14 @@ class PlacementController extends Controller
         Placement::where('id', $request->id)
             ->update($validateData);
 
-        return redirect('/admin/placement/'.$request->area_id)->with('success', 'Data berhasil ditambahkan !');
+        return redirect('/admin/area/tiang/'.$request->area_id)->with('success', 'Data berhasil ditambahkan !');
     }
 
     public function getTiang($area, $type)
     {
         if($type == 'edit'){
-            $result_pole = Pole::where('area_id', $area)->get();
+            $result_pole = Pole::leftJoin('placements', 'pole.id' , '=' , 'placements.tiang_id' )->where('pole.area_id', $area)->get();
+
         }else{
             $place = Placement::select('tiang_id')->where('area_id', $area)->get();
             $result_pole = Pole::whereNotIn('id', $place)->where('area_id', $area)->get();

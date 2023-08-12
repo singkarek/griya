@@ -9,7 +9,7 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Koordinat - {{ $data->nama_area }} - {{ $data->nama_tempat }}</h1>
     </div>
-    <form method="post" action="/admin/placement/edit/koordinat" autocomplete="">
+    <form method="post" action="/admin/area/tiang/edit/koordinat" autocomplete="">
         {{-- @method('put') --}}
         @csrf
         <div class="row mb-2">
@@ -51,7 +51,7 @@
         var lng = data_map.getAttribute("lng");
     
         if(lat != 'lng='){
-            console.log("masuk")
+            // console.log("masuk")
             return {"lat" : Number(lat), "long" : Number(lng)}
         }
             
@@ -111,8 +111,17 @@
             geocoder.geocode({ location: mapsMouseEvent.latLng }, (results, status) => {
             if (status === "OK") {
                 if (results[0]) {
-                    alamat.value = results[0].formatted_address
-                // console.log("Alamat: ", results[0]);
+                    // console.log(results[0])
+                    
+                    var dataArray = results[0].formatted_address.split(',');
+                    const alamat_jadi = dataArray.slice(0, 3);
+
+                    // console.log('oke');
+
+                    // console.log(alamat);
+
+                    alamat.value = alamat_jadi
+               
                 } else {
                 console.log("Tidak ada hasil.");
                 }

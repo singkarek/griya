@@ -9,13 +9,13 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('sales/prospect*') ? 'active' : ''}}" href="{{ route('sales.prospect.index') }}">
+        <a class="nav-link {{ Request::is('sales/customers*') ? 'active' : ''}}" href="/sales/customers">
           <span data-feather="user"></span>
-          Prospect
+          Customers
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{ route('sales.antrian') }}">
+        <a class="nav-link" href="{{ Request::is('/sales/customers*') }}">
           <span data-feather="chevrons-right"></span>
           Antrian
         </a>
@@ -25,15 +25,15 @@
       </div>
 
       <li class="nav-item">
-        <a class="nav-link " href="{{ route('sales.antrian') }}">
+        <a class="nav-link " href="{{ Request::is('/sales/customers*') }}">
           <span data-feather="map"></span>
-          Drop Point
+          Access (Drop Point)
         </a>
       </li>
     
 
       <li class="nav-item">
-        <a class="nav-link " href="{{ route('sales.antrian') }}">
+        <a class="nav-link " href="{{ Request::is('/sales/customers*') }}">
           <span data-feather="compass"></span>
           Survey Admin
         </a>

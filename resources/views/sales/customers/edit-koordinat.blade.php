@@ -49,7 +49,7 @@
         var lng = data_map.getAttribute("lng");
     
         if(lat != 'lng='){
-            console.log("masuk")
+            // console.log("masuk")
             return {"lat" : Number(lat), "long" : Number(lng)}
         }
             

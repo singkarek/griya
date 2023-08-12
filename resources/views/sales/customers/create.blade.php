@@ -25,20 +25,21 @@
 
 <div class="col-lg-9">
 
-<form method="post" action="/sales/prospect/store" autocomplete="">
+<form method="post" action="/sales/customers/store" autocomplete="">
     @csrf
 
           <div class="mb-3 ">
-            <label for="metode" class="h6 form-label @error('metode') is-invalid @enderror" >Customer mendapatkan info dari</label>
-            <select class="form-select" name="metode">
-              <option value="ketemu" >Ketemu</option>         
-              <option value="whatsapp" >WhatsApp</option>         
-              {{-- <option selected>Pilih Metode</option> --}}
+            <label for="metodes_id" class="h6 form-label @error('metodes_id') is-invalid @enderror" >Customer mendapatkan info dari ?</label>
+            <select class="form-select" name="metodes_id">
+              @foreach ($metodes as $metode)
+              <option value="{{ $metode->id }}" >{{ $metode->metode}}</option>         
+              @endforeach
+              <option selected>--- Pilih Metode ---</option>
             </select>
         </div>
 
         <div class="mb-2">
-          <label for="nama" class="h6 form-label">Nama Customer</label>
+          <label for="nama" class="h6 form-label">Nama Customer (Nama lengkap)</label>
           <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name='nama' required value="{{ 
            old('nama') }}">
           @error('nama')
@@ -49,7 +50,7 @@
         </div>
 
         <div class="mb-2">
-            <label for="alamat" class="h6 form-label">Alamat Customer</label>
+            <label for="alamat" class="h6 form-label">Alamat Customer (Domisili)</label>
             <input type="text" class="form-control @error('alamat') is-invalid @enderror" id="alamat" name='alamat' required value="{{ 
              old('alamat') }}">
             @error('alamat')
@@ -97,12 +98,12 @@
         </div>
 
         <div class="mb-3 ">
-            <label for="paket_layanan_id" class="h6 form-label @error('paket_layanan_id') is-invalid @enderror" >Paket layanan</label>
-            <select class="form-select" name="paket_layanan_id">
+            <label for="service_packages_id" class="h6 form-label @error('service_packages_id') is-invalid @enderror" >Paket layanan</label>
+            <select class="form-select" name="service_packages_id">
               @foreach ($layananpakets as $paket)
               <option value="{{ $paket->id }}" >{{ $paket->nama_layanan}} | Rp {{ number_format( $paket->harga, 0, ',', '.') }}</option>         
               @endforeach
-              {{-- <option selected></option> --}}
+              <option selected>--- Pilih Paket ---</option>
             </select>
         </div>
 

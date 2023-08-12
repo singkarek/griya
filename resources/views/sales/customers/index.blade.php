@@ -29,7 +29,7 @@
 @endif
 
 <div class="table-responsive col-lg-9">
-    <a href="{{ route('sales.prospect.create') }}" class="btn btn-primary mb-3">Customer Baru</a>
+    <a href="/sales/customers/create" class="btn btn-primary mb-3">Customer Baru</a>
     <table class="table table-striped table-sm">
       <thead>
         <tr>
@@ -48,26 +48,19 @@
               <td>{{ $customer->alamat }}</td>
               <td>{{ $customer->no_tlp }}</td>
               <td>
-                @if($customer->foto_ktp == null)
-                <a href="/sales/prospect/{{ $customer->id }}/update_fotoktp" class="badge btn-success"><span data-feather="edit"></span> Foto KTP</a>
-                @elseif($customer->foto_ktp != null && $customer->foto_rumah == null)
-                <a href="/sales/prospect/{{ $customer->id }}/update_fotorumah" class="badge btn-success"><span data-feather="edit"></span> Foto Rumah</a>
+                @if($customer->foto_rumah == null)
+                <a href="/sales/koordinat/{{ $customer->id }}/update_fotorumah" class="badge btn-success"><span data-feather="edit"></span> Foto Rumah</a>
                 @endif
                 @if($customer->foto_rumah != null && $customer->lat == null)
-                <a href="{{ route('sales.prospect.editKoordinat', $customer->id) }}" class="badge btn-success"><span data-feather="edit"></span> Koordinat Rumah</a>
+                <a href="/sales/customers/koordinat/{{  $customer->id }}/edit" class="badge btn-success"><span data-feather="edit"></span> Koordinat Rumah</a>
                 @endif
                 @if($customer->lat != null && $customer->id_dp == null)
-                <a href="/sales/prospect/{{ $customer->id }}/update_dp" class="badge btn-success"><span data-feather="edit"></span> Pilih ODP</a>
+                <a href="/sales/koordinat/{{ $customer->id }}/update_dp" class="badge btn-success"><span data-feather="edit"></span> Pilih ODP</a>
                 @endif
  
                 
                 
-                <a href="/sales/prospect/{{ $customer->id }}/detail" class="badge btn-warning"><span data-feather="edit"></span> Detail</a>
-                {{-- <form action="/dashboard/posts/" method="post" class="d-inline">
-                    @method('delete')
-                    @csrf
-                    <button class="badge btn-danger border-0" onclick="return confirm('Yakin hapus Post ?')"><span data-feather="x-circle"></span></button>
-                </form> --}}
+                {{-- <a href="/sales/prospect/{{ $customer->id }}/detail" class="badge btn-warning"><span data-feather="edit"></span> Detail</a> --}}
               </td>
             </tr>
         @endforeach

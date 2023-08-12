@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Area;
 
 use App\Models\Spliters;
 use App\Models\Placement;
@@ -14,8 +14,6 @@ class AreaController extends Controller
     public function index()
     {   
         // $data = CoverageArea::join('placements', 'coverage_areas.id', '=' , 'placements.area_id')->get();
-
-
         $data = CoverageArea::withCount('placements as area')->get();
         // dd($data);
         return view('admin.area.index',[

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Sales;
 
-use App\Models\Prospects;
 use App\Models\Pakets;
+use App\Models\Metodes;
+use App\Models\Prospects;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -11,48 +12,51 @@ class ProspectController extends Controller
 {
     public function index()
     {
-        return view('sales.prospect.index',[
+        return view('sales.customers.index',[
             "customers" => Prospects::all()
         ]);   
     }
 
     public function create()
     {
-        return view('sales.prospect.create',[
+        return view('sales.customers.create',[
+            'metodes' => Metodes::all(),
             'layananpakets' => Pakets::all()
         ]);
     }
 
     public function store(Request $request)
     {   
+        // dd($request);
         $validateData = $request->validate([
-            'metode' => 'required',
+            'metodes_id' => 'required',
             'nama' => 'required|max:255',
             'no_tlp' => 'required|max:20',
             'alamat' => 'required',
             'rt' => 'required|max:11',
             'rw' => 'required|max:11',
-            'paket_layanan_id' => 'required|max:11'
+            'service_packages_id' => 'required|max:11'
         ]);
 
-        $validateData['closing'] = true;
+        $validateData['status_awal'] = 'closing';
+        $validateData['status_akhir'] = 'closing';
 
         Prospects::create($validateData);
 
         return redirect('/sales/prospect')->with('success', 'Data berhasil ditambahkan !');
     }
 
-    public function detail(Prospects $customer)
-    {
-        // dd($customer);
-        return view('sales/prospect/detail',[
-            'customer' => $customer
-        ]);
-    }
+    // public function detail(Prospects $customer)
+    // {
+    //     // dd($customer);
+    //     return view('sales/prospect/detail',[
+    //         'customer' => $customer
+    //     ]);
+    // }
 
     public function editKoordinat(Prospects $id)
     {
-        return view('sales.prospect.edit-koordinat', [
+        return view('sales/customers/edit-koordinat', [
             'prospect' => $id
         ]);
     }
@@ -60,16 +64,17 @@ class ProspectController extends Controller
     public function updateKoordinat(Request $request)
     {
         if($request->lat == 'latitude'){
-            return redirect('/sales/prospect')->with('error', 'Data Koordinat kosong !');
+            return redirect('/sales/customers')->with('error', 'Data Koordinat kosong !');
         } 
         $validateData = $request->validate([
             'lat' => 'required',
             'lng' => 'required'
         ]);
+        
         Prospects::where('id', $request->id)
             ->update($validateData);
 
-        return redirect('/sales/prospect')->with('success', 'Data berhasil ditambahkan !');
+        return redirect('/sales/customers')->with('success', 'Data berhasil ditambahkan !');
 
     }
 }

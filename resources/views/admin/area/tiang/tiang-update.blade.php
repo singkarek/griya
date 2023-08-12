@@ -3,7 +3,7 @@
 @section('container')
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h3 class="h3">Tempat Area - {{ $place[0]['nama_area'] }} - {{ $place[0]['nama_tempat'] }}</h3>
+    <h3 class="h3">Jenis Tiang - {{ $place[0]['nama_area'] }} - {{ $place[0]['nama_tempat'] }}</h3>
 </div>
 
 @if ($errors->any())
@@ -30,10 +30,10 @@
 
 <div class="col-lg-9">
 
-<form method="post" action="/admin/placement/edit/tempat" autocomplete="">
+<form method="post" action="/admin/area/tiang/edit/tempat" autocomplete="">
   @csrf
     <div class="mb-3 ">
-        <label for="jenis_tempat" class="h6 form-label @error('jenis_tempat') is-invalid @enderror" >Jenis Tempat</label>
+        {{-- <label for="jenis_tempat" class="h6 form-label @error('jenis_tempat') is-invalid @enderror" >Jenis Tempat</label> --}}
         <select id='jenis_tempat' class="form-select" name="jenis_tempat">
           <option value="">Pilih Tiang</option>         
           <option value="Tiang Beton PLN" >Tiang Beton PLN</option>         
@@ -74,18 +74,24 @@ $area_id = [$place[0]['area_id'],$type];
       if(selectedValue != "Tiang Sendiri"){
         divElement.hidden = true;
       }else{
-        const url = '/admin/placement/tiangs/'+area[0]+'/'+area[1]
+        const url = '/admin/area/tiang/tiangs/'+area[0]+'/'+area[1]
         fetch(url)
           .then( response => response.json())
           .then( item =>  {
             if(item.tiang.length == 0){
               return;
             }
+            // console.log(item.tiang)
             divElement.hidden = false;
             item.tiang.forEach(item => {
               var optionElement = document.createElement('option');
+              if(item["nama_tempat"] == null){
+                optionElement.innerText = `${item.nama_tiang} | ${item.tinggi} | ${item.vendor}`
+              }else{
+                optionElement.innerText = `${item.nama_tiang} | ${item.tinggi} | ${item.vendor} | ${item.nama_tempat}`
+              }
               optionElement.value = item.id
-              optionElement.innerText = `${item.nama_tiang} | ${item.tinggi} | ${item.vendor}`
+              
               dropdownElement.appendChild(optionElement)
             })
         })
