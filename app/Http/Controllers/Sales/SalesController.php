@@ -27,7 +27,7 @@ class SalesController extends Controller
         // 'spliters.type_spliter', 'spliters.id'
         $accsess = Spliters::select(
             'coverage_areas.kode_area',
-            'spliters.id', 'spliters.type_spliter', 'spliters.parent_ke', 'spliters.spliter_ke',
+            'spliters.id', 'spliters.type_spliter', 'spliters.parent_ke', 'spliters.spliter_ke','spliters.coverage_areas_id',
             'placements.nama_tempat', 'placements.alamat', 'placements.lat', 'placements.lng'
             )->join('placements', 'spliters.placement_id', '=', 'placements.id')
             ->join('coverage_areas', 'spliters.coverage_areas_id', '=', 'coverage_areas.id')

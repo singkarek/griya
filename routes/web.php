@@ -19,18 +19,21 @@ Route::prefix('sales')->name('sales.')->group( function (){
         Route::get('/maps-access', 'mapsAccess');
     });
 
-    Route::prefix('customers')->name('prospect.')->group( function (){
+    Route::prefix('customers')->group( function (){
         Route::controller(CustomersController::class)->group( function (){
             // Route Get Only //
             Route::get('/', 'index');
             Route::get('/create', 'create');
             // Route::get('/{id}/detail', 'detail');
-            Route::get('/koordinat/{id}/edit', 'editKoordinat');
             Route::get('/fotorumah/{id}/edit', 'editFotoRumah');
+            Route::get('/koordinat/{id}/edit', 'editKoordinat');
+            Route::get('/access/{id}/edit', 'editAccess');
+            Route::get('/jalur/{id}/edit', 'editJalur');
             // Route Post Only //
             Route::post('/store', 'store');
             // Route Put Only //
             Route::put('/koordinat', 'updateKoordinat');
+            Route::put('/access', 'updateAccess');
 
         });
     });

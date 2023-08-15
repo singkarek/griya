@@ -11,6 +11,9 @@
     <!-- Custom styles for this template -->
     <link href="/css/dashboard.css" rel="stylesheet">
     
+    {{-- Crsf token --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     @stack('css')
 
   </head>

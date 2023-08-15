@@ -7,23 +7,8 @@
 
 @section('container')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Data Accsess</h1>
+        <h1 class="h2">Pilih Access(ODP) - {{ $customer->nama }}</h1>
     </div>
-    <form method="post" action="/admin/area/tiang/edit/koordinat" autocomplete="">
-        @method('put')
-        @csrf
-        <div class="row mb-2">
-            <div class="col">
-                <input type="text" class="form-control" value="Cari Alamat" id="alamat" name='alamat' required >
-            </div>
-            <input type="text" class="form-control" value="longtitude" id="lng" name='lng' 
-            required hidden>
-            <div class="col">
-            <input type="text" class="form-control" value="latitude" id="lat" name='lat' required hidden>
-                <button type="submitt" class="btn btn-primary">Cari</button>
-            </div>
-        </div>
-    </form>
 @endsection
 
 @section('map')
@@ -37,7 +22,12 @@
     defer
     >
 </script>
-    
+
+{{-- CDN AJAX --}}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous">
+</script>
+
 <script>
 async function getLocation() {
     try {
@@ -54,16 +44,15 @@ async function getLocation() {
 
 async function initMap() {
     let result = JSON.parse('{!! $accsess !!}')
+    let customer = JSON.parse('{!! $customer !!}')
 
-    console.log(result)
     const data_koordinat = await getLocation()
     const myLatlng = { lat: data_koordinat.lat, lng: data_koordinat.long };
-    // console.log(myLatlng)
+
     const { Map } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
     const { LatLng } = await google.maps.importLibrary("core");
     const center = new LatLng({ lat: data_koordinat.lat, lng: data_koordinat.long });
-
 
     const map = new Map(document.getElementById("map"), {
         zoom: 18,
@@ -71,25 +60,37 @@ async function initMap() {
         mapId: "92f4247b6a730b7a",
     });
 
-    let infoWindow = new google.maps.InfoWindow({
-            content: "Kamu Disini !",
-            position: myLatlng,
-        });
-
-    infoWindow.open(map);
-
-    // marker = new google.maps.Marker({
-    //         map,
-    //         label: "kamu disini",
-    //         position: center
-    // });
+    marker = new google.maps.Marker({
+            map,
+            label: customer.nama,
+            position: center
+    });
 
     for (const property of result) {
-        // console.log(parseFloat(property.lat))
         const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
             map,
             content: buildContent(property),
             position: { lat: parseFloat(property.lat), lng: parseFloat(property.lng) },
+        });
+    
+        AdvancedMarkerElement.addListener("click", () => {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            
+            });
+
+            if (window.confirm("Pilih ODP Ini ?")) {
+                    $.ajax({
+                    method: 'put',
+                    url: '/sales/customers/access',
+                    data : { "spliter_id" : property.id, "coverage_areas_id" : property.coverage_areas_id , "customer_id" : customer.id},
+                    success : function(data) {
+                        window.location.href = "/sales/customers";
+                    }
+                });
+            }
         });
     }
 }
