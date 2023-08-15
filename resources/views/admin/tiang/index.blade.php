@@ -12,7 +12,7 @@
   @endif
 
   <a href="{{ route('admin.tiang.create') }}" class="btn btn-primary mb-3">Input Tiang Baru</a>
-  <a href="{{ route('admin.tiang.transfertiang') }}" class="btn btn-info mb-3 mx-2 text-white">Transfer Tiang</a>
+  <a href="{{ route('admin.tiang.transfertiang') }}" class="btn btn-success mb-3 mx-2 text-white">Transfer Tiang</a>
 
   <div class="table-responsive col-lg-9">
     <table class="table table-striped table-sm">
@@ -37,7 +37,7 @@
           <td >{{ $tiang->nama_tiang }}</td>
           <td >{{ $tiang->vendor }}</td>
           <td >{{ $tiang->tinggi }}</td>
-          <td > Rp {{ number_format( $tiang->harga, 0, ',', '.') }} </td>
+          <td >Rp {{ number_format( $tiang->harga, 0, ',', '.') }} </td>
           <td >{{ $tiang->created_at->format('d M Y') }}</td>
         </tr>
         @endforeach

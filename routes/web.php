@@ -10,21 +10,23 @@ use App\Http\Controllers\Admin\Area\TiangAreaController;
 use App\Http\Controllers\Admin\Area\SplitterController;
 
 use App\Http\Controllers\Admin\BackboneController;
-use App\Http\Controllers\Sales\ProspectController;
+use App\Http\Controllers\Sales\CustomersController;
 
 Route::prefix('sales')->name('sales.')->group( function (){
     Route::controller(SalesController::class)->group( function (){
         Route::get('/', 'index')->name('index');
         Route::get('/antrian', 'antrian')->name('antrian');
+        Route::get('/maps-access', 'mapsAccess');
     });
 
     Route::prefix('customers')->name('prospect.')->group( function (){
-        Route::controller(ProspectController::class)->group( function (){
+        Route::controller(CustomersController::class)->group( function (){
             // Route Get Only //
             Route::get('/', 'index');
             Route::get('/create', 'create');
             // Route::get('/{id}/detail', 'detail');
             Route::get('/koordinat/{id}/edit', 'editKoordinat');
+            Route::get('/fotorumah/{id}/edit', 'editFotoRumah');
             // Route Post Only //
             Route::post('/store', 'store');
             // Route Put Only //

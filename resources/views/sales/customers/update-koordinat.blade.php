@@ -7,9 +7,10 @@
 
 @section('container')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Data Placement</h1>
+        <h1 class="h2">Upload Koordinat - {{ $customer->nama }}</h1>
     </div>
-    <form method="post" action='/sales/prospect/updateKoordinat' autocomplete="">
+
+    <form method="post" action='/sales/customers/koordinat' autocomplete="">
         @method('put')
         @csrf
         <div class="row mb-2">
@@ -18,16 +19,17 @@
             </div>
             <div class="col">
                 <input type="text" class="form-control" value="longtitude" id="lng" name='lng' required>
-                <input type="text" value={{ $prospect->id }} name='id' required hidden>
             </div>
+
+            <input type="text" value={{ $customer->id }} name='id' required hidden>
             <div class="col">
                 <button type="submitt" class="btn btn-primary">Simpan</button>
             </div>
         </div>
     </form>
 
-    <div id="namamap" data='{{ $prospect->nama }} | {{ $prospect->alamat }}' ></div>
-    <div id="mapexist" lat={{ $prospect->lat }} lng={{ $prospect->lng }}></div>
+    <div id="namamap" data='{{ $customer->nama }} | {{ $customer->alamat }}' ></div>
+    <div id="mapexist" lat={{ $customer->lat }} lng={{ $customer->lng }}></div>
 @endsection
 
 @section('map')
@@ -45,11 +47,11 @@
 <script>
     async function getLocation() {
         const data_map  = document.querySelector('#mapexist');
+        
         var lat = data_map.getAttribute("lat");
         var lng = data_map.getAttribute("lng");
     
         if(lat != 'lng='){
-            // console.log("masuk")
             return {"lat" : Number(lat), "long" : Number(lng)}
         }
             

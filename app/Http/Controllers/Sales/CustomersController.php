@@ -8,7 +8,7 @@ use App\Models\Prospects;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class ProspectController extends Controller
+class CustomersController extends Controller
 {
     public function index()
     {
@@ -43,7 +43,7 @@ class ProspectController extends Controller
 
         Prospects::create($validateData);
 
-        return redirect('/sales/prospect')->with('success', 'Data berhasil ditambahkan !');
+        return redirect('/sales/customers')->with('success', 'Data berhasil ditambahkan !');
     }
 
     // public function detail(Prospects $customer)
@@ -54,12 +54,21 @@ class ProspectController extends Controller
     //     ]);
     // }
 
+    public function editFotoRumah(Prospects $id)
+    {
+        return view('sales.customers.update-fotorumah',[
+            'customer' => $id
+        ]);
+
+    }
+
     public function editKoordinat(Prospects $id)
     {
-        return view('sales/customers/edit-koordinat', [
-            'prospect' => $id
+        return view('sales.customers.update-koordinat', [
+            'customer' => $id
         ]);
     }
+
 
     public function updateKoordinat(Request $request)
     {
