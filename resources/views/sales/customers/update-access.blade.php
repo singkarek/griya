@@ -47,12 +47,12 @@ async function initMap() {
     let customer = JSON.parse('{!! $customer !!}')
 
     const data_koordinat = await getLocation()
-    const myLatlng = { lat: data_koordinat.lat, lng: data_koordinat.long };
+    const myLatlng = { lat: parseFloat(customer.lat) , lng: parseFloat(customer.lng)  };
 
     const { Map } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
     const { LatLng } = await google.maps.importLibrary("core");
-    const center = new LatLng({ lat: data_koordinat.lat, lng: data_koordinat.long });
+    const center = new LatLng(myLatlng);
 
     const map = new Map(document.getElementById("map"), {
         zoom: 18,
@@ -78,7 +78,6 @@ async function initMap() {
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            
             });
 
             if (window.confirm("Pilih ODP Ini ?")) {

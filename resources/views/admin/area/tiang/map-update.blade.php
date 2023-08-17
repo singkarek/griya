@@ -108,26 +108,25 @@
 
             const geocoder = new google.maps.Geocoder();
 
-            geocoder.geocode({ location: mapsMouseEvent.latLng }, (results, status) => {
-            if (status === "OK") {
-                if (results[0]) {
-                    // console.log(results[0])
-                    
-                    var dataArray = results[0].formatted_address.split(',');
-                    const alamat_jadi = dataArray.slice(0, 3);
+        geocoder.geocode({ location: mapsMouseEvent.latLng }, (results, status) => {
+                if (status === "OK") {
+                    if (results[0]) {
+                        // console.log(results[0])
+                        var dataArray = results[0].formatted_address.split(',');
+                        const alamat_jadi = dataArray.slice(0, 3);
 
-                    // console.log('oke');
+                        // console.log('oke');
 
-                    // console.log(alamat);
+                        // console.log(alamat);
 
-                    alamat.value = alamat_jadi
-               
+                        alamat.value = alamat_jadi
+                
+                    } else {
+                    console.log("Tidak ada hasil.");
+                    }
                 } else {
-                console.log("Tidak ada hasil.");
+                    console.error("Geocode gagal: ", status);
                 }
-            } else {
-                console.error("Geocode gagal: ", status);
-            }
             });
         });
 

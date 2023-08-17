@@ -7,10 +7,10 @@
           <span data-feather="home"></span>
           Dashboard
         </a>
-        <a class="nav-link {{ Request::is('admin.index') ? 'active' : ''}}" aria-current="page" href="{{ route('admin.index') }}">
+        {{-- <a class="nav-link {{ Request::is('admin.index') ? 'active' : ''}}" aria-current="page" href="{{ route('admin.index') }}">
           <span data-feather="user"></span>
           Data Customer
-        </a>
+        </a> --}}
       </li>
 
         {{-- <a class="nav-link {{ Request::is('sales/customer/*') ? 'active' : ''}}" href="{{ route('sales.complate') }}">
@@ -60,7 +60,7 @@
 
     <ul class="nav flex-column mb-2">
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('admin') ? 'active' : ''}}" href="{{ route('admin.area.index') }}">
+        <a class="nav-link {{ Request::is('admin/modem*') ? 'active' : ''}}" href="/admin/modem">
           <span data-feather="hard-drive"></span>
           Modem
         </a>

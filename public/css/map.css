@@ -43,3 +43,39 @@ body {
 [class$=api-load-alpha-banner] {
   display: none;
 }
+
+
+
+
+
+
+#controls {
+    position: absolute;
+    bottom: 100px;
+    left: 100px;
+    display: flex;
+    flex-direction: column;
+    width: 30%
+}
+
+.blink {
+    animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: .5;
+    }
+
+    75% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: .5;
+    }
+}

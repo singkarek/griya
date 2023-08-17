@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Spliters extends Model
 {
@@ -11,4 +12,9 @@ class Spliters extends Model
     protected $table        = 'spliters';
     protected $guarded      = ['id'];
     use HasFactory;
+
+    public function customers():HasMany
+    {
+        return $this->hasMany(customers::class, 'spliter_id');
+    }
 }

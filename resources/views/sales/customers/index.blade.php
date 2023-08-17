@@ -48,24 +48,27 @@
             <td>{{ $customer->alamat }}</td>
             <td>{{ $customer->no_tlp }}</td>
             <td>
-              @if($customer->foto_rumah == null)
+              @if($customer->status_proggres == 'foto_rumah')
               <a href="/sales/customers/fotorumah/{{ $customer->id }}/edit" class="badge btn-success"><span data-feather="edit"></span> Foto Rumah</a>
               @endif
 
-              @if($customer->foto_rumah != null && $customer->lat == null)
+              @if($customer->status_proggres == 'koordinat')
               <a href="/sales/customers/koordinat/{{  $customer->id }}/edit" class="badge btn-success"><span data-feather="edit"></span> Koordinat Rumah</a>
               @endif
 
-              @if($customer->lat != null && $customer->spliter_id == null)
+              @if($customer->status_proggres == 'access')
               <a href="/sales/customers/access/{{ $customer->id }}/edit" class="badge btn-success"><span data-feather="edit"></span> Pilih ODP</a>
               @endif
 
-              @if($customer->spliter_id != null && $customer->jalur_id == null)
+              @if($customer->status_proggres == 'jalur')
               <a href="/sales/customers/jalur/{{ $customer->id }}/edit" class="badge btn-success"><span data-feather="edit"></span> Buat Jalur</a>
               @endif
 
-              @if($customer->jalur_id != null && $customer->status_akhir == 'closing')
-              <a href="/sales/customers/access/{{ $customer->id }}/edit" class="badge btn-success"><span data-feather="edit"></span> Ajukan pemasangan</a>
+              @if($customer->status_proggres == 'siap_pengajuan')
+                <form action="/sales/customers/pengajuan/{{ $customer->id }}" method="post" class="d-inline">
+                    @csrf
+                    <button class="badge btn-primary border-0" onclick="return confirm('Yakin Ajukan Pemasangan ?')"><span data-feather="edit"></span> Ajukan Pemasangan</button>
+                </form>
               @endif
 
               {{-- <a href="/sales/prospect/{{ $customer->id }}/detail" class="badge btn-warning"><span data-feather="edit"></span> Detail</a> --}}
@@ -75,6 +78,7 @@
     </tbody>
   </table>
 </div>
+
 
 @endsection
 

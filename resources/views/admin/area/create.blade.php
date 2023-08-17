@@ -29,7 +29,7 @@
   </div>
 @endif
 
-<div class="col-lg-9">
+<div class="col-lg-6">
 
 <form method="post" action="/admin/area/create" autocomplete="">
     @csrf

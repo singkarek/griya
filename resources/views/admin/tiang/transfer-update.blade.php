@@ -79,7 +79,7 @@
                     </select>
                     </div>
                     <div class="col">
-                    <button type="button" class="btn btn-danger ml-2" onclick="removeForm(this)">-</button>
+                        <button type="button" class="btn btn-danger ml-2" onclick="removeForm(this)">-</button>
                     </div>
                 </div>
                 `;
@@ -95,10 +95,10 @@
         }
 
         function removeForm(button) {
-        const formGroup = button.closest('.form-group');
-        const selectElement = formGroup.querySelector('[name="tiang[]"]');
-        usedOptions.delete(selectElement.value);
-        formGroup.remove();
-    }
+            const formGroup = button.closest('.form-group');
+            const selectElement = formGroup.querySelector('[name="tiang[]"]');
+            usedOptions.delete(selectElement.value);
+            formGroup.remove();
+        }
     </script>
 @endsection
