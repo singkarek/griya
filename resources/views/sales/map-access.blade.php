@@ -88,6 +88,7 @@ async function initMap() {
         // console.log(parseFloat(property.lat))
         const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
             map,
+
             content: buildContent(property),
             position: { lat: parseFloat(property.lat), lng: parseFloat(property.lng) },
         });
@@ -96,8 +97,15 @@ async function initMap() {
 
 function buildContent(property) {
     const priceTag = document.createElement("div");
-    priceTag.className = "price-tag";
-    priceTag.textContent = property.nama_tempat+" | "+property.kode_area+" "+property.parent_ke+"."+property.spliter_ke;
+    if(property.customers_count == 8){
+        priceTag.className = "price-tag-penuh";
+    }else if( property.customers_count == 6 | property.customers_count == 7 ){
+        priceTag.className = "price-tag-awas";
+    }else{
+        priceTag.className = "price-tag";
+    }
+    // priceTag.textContent = property.customers_count+" | " + property.nama_tempat+" | "+property.kode_area+" "+property.parent_ke+"."+property.spliter_ke;
+    priceTag.textContent = property.kode_area+" "+property.parent_ke+"."+property.spliter_ke+" | "+property.customers_count ;
     return priceTag;
 }
 

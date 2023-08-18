@@ -34,43 +34,48 @@
     <div id="form-container"  class="col-lg-9">
 
         <div class="row mb-2">
-          <div class="col-md-5">
-            <label for="supplier" class="h6 form-label">Supllier</label>
-            <input type="text" class="form-control" id="supplier" name='supplier' required autofocus>
+          <div class="col-md-3">
+            <label for="ref" class="h6 form-label">Kode Ref</label>
+            <input type="text" class="form-control" id="ref" name='ref' autocomplete="off" required autofocus>
           </div>
           <div class="col-md-5">
+            <label for="supplier" class="h6 form-label">Supllier</label>
+            <input type="text" class="form-control" id="supplier" name='supplier' required>
+          </div>
+          <div class="col-md-4">
             <label for="totalharga" class="h6 form-label">Total Harga</label>
             <input type="text" class="form-control" id="totalharga" name='totalharga' required autocomplete="off" >
           </div>
-          <div class="col">
-            <label for="totalbelanja" class="h6 form-label">Total Item</label>
-            <input type="number" class="form-control" id="totalbelanja" name='totalbelanja' disabled>
-          </div>
+
         </div>
 
       {{-- <input type="text" class="form-control" name="serial_number[]" placeholder="Serial Number" autofocus> --}}
 
-      <div class="form-group mb-4">
+      <div class="form-group mb-3">
         <div class="row mb-2">
-          <div class="col-md-6">
+          <div class="col-md-3">
             <label for="brand" class="h6 form-label @error('brand') is-invalid @enderror" >Brand</label>
             <select class="form-select" name="brand">
               <option value="ZTE" >ZTE</option>         
             </select>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <label for="type" class="h6 form-label" >Type</label>
             <select class="form-select" name="type">
               <option value="F607-V7" >F607-V7</option>         
               <option value="ZTE" >ZTE</option>         
             </select>
           </div>
-          <div class="col">
+          <div class="col-md-2">
             <label for="connector" class="h6 form-label" >Connector</label>
             <select class="form-select" name="connector">
               <option value="UPC" >UPC</option>         
               <option value="APC" >APC</option>         
             </select>
+          </div>
+          <div class="col-md-4">
+            <label for="totalbelanja" class="h6 form-label">Total Item</label>
+            <input type="number" class="form-control" id="totalbelanja" name='totalbelanja' disabled>
           </div>
         </div>
       </div>

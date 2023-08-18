@@ -15,6 +15,6 @@ class Customers extends Model
 
     public function spliter():BelongsTo
     {
-        return $this->belongsTo(Spliters::class, 'access_id', 'id');
+        return $this->belongsTo(Spliters::class, 'spliter_id', 'id');
     }
 }

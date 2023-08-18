@@ -14,7 +14,11 @@ class AreaController extends Controller
     public function index()
     {   
         // $data = CoverageArea::join('placements', 'coverage_areas.id', '=' , 'placements.area_id')->get();
-        $data = CoverageArea::withCount('placements as area')->get();
+        $data = CoverageArea::withCount('placements')->get();
+        // $data = $coverageAreas = CoverageArea::withCount(['placements' => function ($query) {
+        //     $query->where('jenis_tempat', 'Tiang Sendiri');
+        // }])->get();
+
         // dd($data);
         return view('admin.area.index',[
             "areas" => $data

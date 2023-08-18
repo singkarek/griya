@@ -12,7 +12,10 @@ class ModemController extends Controller
 {
     public function index()
     {
-        return view('admin.modem.index');
+        $modems = Modems::Where('status','ready')->get();
+        return view('admin.modem.index',[
+            'modems' => $modems 
+        ]);
     }
 
     public function create()
@@ -39,6 +42,7 @@ class ModemController extends Controller
         }));
 
         $supplier = Str::upper($request->supplier);
+        $ref = Str::upper($request->ref);
         $hari_ini = Carbon::now()->format('Y-m-d');
 
         $panjang = count($sn_modem);
@@ -47,13 +51,15 @@ class ModemController extends Controller
         $data_modem = [];
         for($a=0;$a<$panjang;$a++){
             $data_modem[] = [
+                'ref' => $ref,
                 'supplier' => $supplier,
                 'brand' => $request->brand,
                 'type' => $request->type,
                 'connector' => $request->connector,
                 'sn' => $sn_modem[$a],
                 'harga' => $harga_pcs,
-                'tanggal_belanja' => $hari_ini
+                'tanggal_belanja' => $hari_ini,
+                'status' => 'ready'
             ];
         };
 

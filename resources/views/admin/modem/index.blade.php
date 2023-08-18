@@ -10,7 +10,7 @@
         {{ session('success') }}
     </div>
   @endif
-
+{{-- {{ $modems }} --}}
   <a href="/admin/modem/create" class="btn btn-primary mb-3">Input Modem</a>
 
   <div class="table-responsive col-lg-9">
@@ -19,27 +19,27 @@
         <tr>
           <th class="w-10">#</th>
           <th class="w-45">Kode ref</th>
-          <th class="w-45">Nama Tiang</th>
-          <th class="w-45">Vendor</th>
-          <th class="w-45">Tinggi</th>
+          <th class="w-45">Supplier</th>
+          <th class="w-45">Brand</th>
+          <th class="w-45">Type</th>
+          <th class="w-45">Serial Number</th>
           <th class="w-45">Harga</th>
           <th class="w-45">Tanggal Belanja</th>
-
-
         </tr>
       </thead>
       <tbody>
-        {{-- @foreach ($tiangs as $tiang )
+        @foreach ($modems as $modem )
         <tr>
           <td >{{ $loop->iteration }}</td>
-          <td >{{ $tiang->ref }}</td>
-          <td >{{ $tiang->nama_tiang }}</td>
-          <td >{{ $tiang->vendor }}</td>
-          <td >{{ $tiang->tinggi }}</td>
-          <td >Rp {{ number_format( $tiang->harga, 0, ',', '.') }} </td>
-          <td >{{ $tiang->created_at->format('d M Y') }}</td>
+          <td >{{ $modem->ref }}</td>
+          <td >{{ $modem->supplier }}</td>
+          <td >{{ $modem->brand }}</td>
+          <td >{{ $modem->type }}</td>
+          <td >{{ $modem->sn }}</td>
+          <td >Rp {{ number_format( $modem->harga, 0, ',', '.') }} </td>
+          <td >{{ $modem->tanggal_belanja }}</td>
         </tr>
-        @endforeach --}}
+        @endforeach
       </tbody>
     </table>
   </div>

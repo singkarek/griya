@@ -8,18 +8,22 @@ use App\Models\Spliters;
 use App\Models\Customers;
 use App\Models\Prospects;
 use Illuminate\Http\Request;
+use App\Models\PsbWorkOrders;
 use App\Models\ProspectPlaces;
 use App\Models\ProspectPoints;
 use Illuminate\Support\Carbon;
 use App\Models\ProspectSegments;
+use Illuminate\Support\Facades\DB;
+use App\Models\CustomersAlamatMaps;
 use App\Http\Controllers\Controller;
+use App\Models\CustomersAlamatTerpasang;
 
 class CustomersController extends Controller
 {
     public function index()
     {
         return view('sales.customers.index',[
-            "customers" => Prospects::where('status_akhir','closing')->get()
+            "customers" => Prospects::where([['status_akhir','=','closing'],['status_proggres','!=','proses_pengajuan']])->get()
         ]);   
     }
 
@@ -35,7 +39,7 @@ class CustomersController extends Controller
     {   
         $validateData = $request->validate([
             'metodes_id' => 'required',
-            'nama' => 'required|max:255',
+            'nama'   => 'required|max:255',
             'no_tlp' => 'required|max:20',
             'alamat' => 'required',
             'rt' => 'required|max:11',
@@ -43,12 +47,10 @@ class CustomersController extends Controller
             'service_packages_id' => 'required|max:11'
         ]);
 
+        $validateData['sales_id'] = 1;
         $validateData['status_awal'] = 'closing';
         $validateData['status_akhir'] = 'closing';
         $validateData['status_proggres'] = 'foto_rumah';
-
-
-
         // dd($tes);
 
         Prospects::create($validateData);
@@ -81,15 +83,16 @@ class CustomersController extends Controller
 
     public function editAccess(Prospects $id)
     {
-        $accsess = Spliters::select(
-            'coverage_areas.kode_area',
-            'spliters.id', 'spliters.type_spliter', 'spliters.parent_ke', 'spliters.spliter_ke','spliters.coverage_areas_id',
-            'placements.nama_tempat', 'placements.alamat', 'placements.lat', 'placements.lng'
-            )->join('placements', 'spliters.placement_id', '=', 'placements.id')
-            ->join('coverage_areas', 'spliters.coverage_areas_id', '=', 'coverage_areas.id')
-            ->whereNotNull('placement_id')
-            ->where('spliters.type_spliter', 'accsess')
-            ->get();
+        $accsess = Spliters::
+        select('coverage_areas.kode_area',
+        'spliters.id', 'spliters.type_spliter', 'spliters.parent_ke', 'spliters.spliter_ke','spliters.coverage_areas_id',
+        'placements.nama_tempat', 'placements.alamat', 'placements.lat', 'placements.lng'
+        )->join('placements', 'spliters.placement_id', '=', 'placements.id')
+        ->join('coverage_areas', 'spliters.coverage_areas_id', '=', 'coverage_areas.id')
+        ->whereNotNull('placement_id')
+        ->where('spliters.type_spliter', 'accsess')
+        ->get();
+
 
         return view('sales.customers.update-access', [
             'customer' => $id,
@@ -182,7 +185,6 @@ class CustomersController extends Controller
             array_push($segments, $newItem);
         }
 
-
         ProspectPlaces::insert($places);
         ProspectSegments::insert($segments);
         ProspectPoints::insert($points);
@@ -194,55 +196,158 @@ class CustomersController extends Controller
     public function pengajuanPasang($id)
     {
         [$prospect] = Prospects::where('id', $id)->get();
+        
+        // [$spliter_cari] = Spliters::withCount('customers')
+        //     ->where([['type_spliter','=','accsess'],['id','=',$prospect->spliter_id]])->get();
 
-        [$spliter_cari] = Spliters::withCount('customers')->where([['type_spliter','=','accsess'],['id','=',$prospect->spliter_id]])->get();
-        $spliter_no = $spliter_cari->customers_count+1;
+        //saat customer ditetapkan terminate oleh system maka system akan membuat record baru ditable khusus agar ada data dan diketahui siapa saja yang harus di hapus user pppoe dan di olt (record ini akan berhasilkan status true jika sudah di lakukan penghapusan).
+        //saat status_subscribe menjadi terminate dan kolom port_acces masih ada nilai, yang akan menjadikan pada wo ada kolom lepas port menjadi true, berfungsi untuk menandakan bahwa teknisi perlu melakukan pelepasan pada port acces dilapangan,
 
-        // $customer = Customers::where('area_id','5')->get();
+        //pada saat teknisi melakukan post lepas port bertujuan untuk mentriger backend menggatur agar wo lepas port akan menjadi value true menandakan teknisi berhasil melakukan pelepasan port di lapangan
+        
+        $coverage_areas_id = $prospect->coverage_areas_id;
+        $spliter_access_id = $prospect->spliter_id;
+
+        $customers = Customers::where('coverage_areas_id',$coverage_areas_id)->get();
+        $count_customer = count($customers);
 
         $hari_ini = Carbon::now()->format('dmy');
-        $no_urut = Customers::count()+1;
+        $no_urut_seluruh_customers = Customers::count()+1;
+        $pppoe_secret = 'G'.$hari_ini.$no_urut_seluruh_customers;
 
-        $pppoe_secret = 'G'.$hari_ini.$no_urut;
+        $user_exist = [];
+        $terminate = [];
+        $active = [];
+        $cari_spliter_no = [];
+        $cabut_port = null;
+        $user_terminate = null;
+
+        $missingNumbers = [];
+
+        //block DP dimulai disini
+        $referensi_access = range(1, 8);
+        for($b=0;$b<$count_customer;$b++){
+            if( $customers[$b]['spliter_id'] == $spliter_access_id & $customers[$b]['port_access'] != null){
+                $user_exist[] = $customers[$b]['port_access'];
+                if( $customers[$b]['subscribe_status'] == 'terminate' ){
+                    $terminate[] = $customers[$b]['port_access'];
+                }else{
+                    $active[] = $customers[$b]['port_access'];
+                } 
+            }
+        }
+        if(count($active) == 8){
+            //return DP penuh 
+            dd(['status'=>'dp penuh','prospect_id'=>$id]);
+            ProspectPlaces::where('prospect_id',$id)->delete();
+            ProspectSegments::where('prospect_id',$id)->delete();
+            ProspectPoints::where('prospect_id',$id)->delete();
+            Prospects::where('id', $id)->update([
+                'status_akhir' => 'access_penuh',
+                'status_proggres' => 'access',
+                'coverage_areas_id' => null,
+                'spliter_id' => null
+            ]);
+            dd('halaman_aawal');
+        };
+
+        // dd($user_exist);
+        if(count($user_exist) == 0){
+            $no_spliter = 1;
+        }else{
+            if(count($terminate)+count($active) == 8 ){
+                $no_spliter = min($terminate);
+                $cabut_port = true;
+
+                $user_terminate = Customers::where([['spliter_id','=', $spliter_access_id], ['port_access','=', $no_spliter]])->first();
+                if($user_terminate){
+                    $user_terminate->update(['port_access' => null]);
+                }
+                $user_terminate = $user_terminate['pppoe_secret'];
+
+            }else{
+                foreach ($referensi_access as $number) {
+                    if (!in_array($number, $user_exist)) {
+                        $cari_spliter_no[] = $number;
+                    }
+                }
+                $no_spliter = min($cari_spliter_no);
+            }
+        }
+        // dd([$no_spliter,$cabut_port,$user_terminate]);
+
+        //blok DP done, sumpah lelah, tapi seru, nulis ini sampe salah terus, wkwkwkwkwk
+
+        //Block Urusan ONU, Iyo Ancen akeh,wkwkwkwkk/// 
+        
+        $missingNumbers = [];
+        // dd($customers);
+        if($count_customer == 0){
+            $missingNumbers = [1];
+        }else{
+            $no_onu_customers = [];
+            for($a=0;$a<$count_customer;$a++){
+                if($customers[$a]["no_onu"] != null){
+                    $no_onu_customers[] = $customers[$a]["no_onu"];
+                }    
+            }
+            
+            $referensi = range(1, 128);
+            foreach ($referensi as $number) {
+                if (!in_array($number, $no_onu_customers)) {
+                    $missingNumbers[] = $number;
+                }
+            }
+        }
+        if(count($missingNumbers) == 0){
+            Prospects::where('id', $id)->update(['status_proggres'=>'olt_penuh']);
+            return redirect('/sales/customers')->with('error', 'Hubungi admin !');
+        }else{
+            $no_onu = min($missingNumbers);
+        }
 
         $alamat_maps = [
-            'pppoe_secret' => $pppoe_secret,
-            'lat'          => $prospect->lat ,
-            'lng'          => $prospect->lng ,
-            'm_no'         => $prospect->m_no ,
-            'm_jln'        => $prospect->m_jln ,
-            'm_kel'        => $prospect->m_kel ,
-            'm_kec'        => $prospect->m_kec ,
-            'm_kota'       => $prospect->m_kota ,
-            'm_type'       => $prospect->m_type 
+            'pppoe_secret' => $pppoe_secret, 'lat' => $prospect->lat ,'lng' => $prospect->lng ,
+            'm_no'         => $prospect->m_no ,'m_jln' => $prospect->m_jln , 'm_kel' => $prospect->m_kel ,
+            'm_kec'        => $prospect->m_kec , 'm_kota' => $prospect->m_kota ,'m_type'       => $prospect->m_type 
         ];
 
         $alamat_terpasang = [
-            'pppoe_secret' => $pppoe_secret,
-            'alamat'       => $prospect->alamat ,
-            'rt'           => $prospect->rt ,
-            'rw'           => $prospect->rw 
+            'pppoe_secret' => $pppoe_secret, 'alamat' => $prospect->alamat ,
+            'rt'           => $prospect->rt, 'rw' => $prospect->rw 
         ];
 
         $customer = [
-            'prospects_id'  => $prospect->id ,
-            'sales_id'      => $prospect->sales_id ,
-            'pppoe_secret'  => $pppoe_secret ,
-            'nama'          => $prospect->nama ,
-            'no_tlp'        => $prospect->no_tlp ,
-            'paket_id'      => $prospect->service_packages_id ,
-            'coverage_areas_id' => $prospect->coverage_areas_id ,
-            'spliter_id'        => $prospect->spliter_id ,
-            'port_access'       => $spliter_no ,
-            'no_onu'            => 1 ,
+            'prospects_id'  => $prospect->id , 'sales_id' => $prospect->sales_id ,'is_admin' => $prospect->is_admin,
+            'pppoe_secret'  => $pppoe_secret , 'nama' => $prospect->nama ,
+            'no_tlp'        => $prospect->no_tlp , 'service_packages_id'=> $prospect->service_packages_id ,
+            'coverage_areas_id' => $prospect->coverage_areas_id , 'spliter_id' => $prospect->spliter_id ,
+            'port_access'       => $no_spliter ,
+            'no_onu'            => $no_onu ,
             "pppoe_vlan_id"     => 1 ,
             "hotspot_vlan_id"   => 2 ,
             'subscribe_status'  => 'pra_wo'
-        ]; 
+        ];
 
-        
-        dd($customer);
-        dd($alamat_maps);
+        $work_order = ['pppoe_secret' => $pppoe_secret, 'lepas_port' => $cabut_port, 'pppoe_secret_cabut' => $user_terminate, 'status_wo' => 'prosess_validasi'];
+
+        try {
+            DB::connection('db_customers')->transaction(function() use ($customer,$work_order,$alamat_maps,$alamat_terpasang){
+                DB::connection('db_oprasional')->transaction(function() use ($customer,$work_order,$alamat_maps,$alamat_terpasang){
+                    DB::connection('db_sales')->transaction(function() use ($customer,$work_order,$alamat_maps,$alamat_terpasang){
+                        Prospects::where('id', $customer['prospects_id'])->update(['status_proggres' => 'proses_pengajuan']);
+                        Customers::create($customer);
+                        CustomersAlamatMaps::create($alamat_maps);
+                        CustomersAlamatTerpasang::create($alamat_terpasang);
+                        PsbWorkOrders::create($work_order);
+                    });
+                });
+            });
+            
+            return redirect()->back()->with('success', 'Berhasil pengajuan !');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menjalankan operasi !');
+        }
 
     }
 }
