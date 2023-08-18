@@ -15,7 +15,7 @@ Route::prefix('sales')->group(function (){
 
     Route::controller(SalesController::class)->group(function (){
         Route::get('/', 'index');
-        Route::get('/antrian', 'antrian');
+        Route::get('/prosespemasangan', 'prosesPemasangan');
         Route::get('/maps-access', 'mapsAccess');
     });
 
