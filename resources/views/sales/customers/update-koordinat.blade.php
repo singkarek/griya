@@ -36,7 +36,7 @@
 
 
     </form>
-
+    {{-- {{ $customer }} --}}
     <div id="namamap" data='{{ $customer->nama }} | {{ $customer->alamat }}' ></div>
     <div id="mapexist" lat={{ $customer->lat }} lng={{ $customer->lng }}></div>
 @endsection
@@ -127,8 +127,8 @@
 
                         
                         const hasil = results[0]
-                        console.log(hasil);
-                        console.log(hasil.address_components[0].types[0])
+                        // console.log(hasil);
+                        // console.log(hasil.address_components[0].types[0])
 
                         m_no.value = hasil.address_components[0].short_name
                         m_jln.value = hasil.address_components[1].short_name

@@ -2,14 +2,36 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\TiangController;
 use App\Http\Controllers\Admin\ModemController;
+use App\Http\Controllers\Admin\TiangController;
+use App\Http\Controllers\Sales\SalesController;
 use App\Http\Controllers\Admin\Area\AreaController;
-use App\Http\Controllers\Admin\Area\TiangAreaController;
+use App\Http\Controllers\Sales\CustomersController;
+
 use App\Http\Controllers\Admin\Area\SplitterController;
 
-use App\Http\Controllers\Sales\SalesController;
-use App\Http\Controllers\Sales\CustomersController;
+use App\Http\Controllers\Admin\Area\TiangAreaController;
+use App\Http\Controllers\Oprasional\OprasionalController;
+use App\Http\Controllers\Oprasional\AntrianController;
+
+
+Route::prefix('oprasional')->group(function (){
+    Route::controller(OprasionalController::class)->group(function (){
+        Route::get('/', 'index');
+    });
+        Route::prefix('antrian')->group(function (){
+            Route::controller(AntrianController::class)->group(function (){
+                Route::get('/requestvalidasi', 'requestvalidasi');
+                Route::get('/requestvalidasi/{ppoe_id}/edit', 'riviewValidasi');
+                Route::get('/payment', 'waitPayment');
+                Route::get('/waitantrian', 'waitaAtrian');
+                Route::get('/penjadwalan', 'penjadwalan');
+           
+        });
+    });
+    
+});
+
 
 Route::prefix('sales')->group(function (){
 

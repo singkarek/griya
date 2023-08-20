@@ -55,7 +55,7 @@ class SalesController extends Controller
             ->join('griya_company.service_packages','griya_customers.customers.service_packages_id','=','griya_company.service_packages.id')
             ->where('status_wo','!=','terpasang')
             ->where('sales_id','=',$id_sales)->get();
-        // dd($work_orders_psb);
+            // dd($work_orders_psb);
         return view('sales.progres-pemasangan',[
             'customers' => $work_orders_psb
         ]);
