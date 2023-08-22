@@ -24,12 +24,21 @@ Route::prefix('oprasional')->group(function (){
                 Route::get('/requestvalidasi', 'requestvalidasi');
                 Route::get('/requestvalidasi/{ppoe_id}/edit', 'riviewValidasi');
                 Route::get('/payment', 'waitPayment');
-                Route::get('/waitantrian', 'waitaAtrian');
+                // Route::get('/waitantrian', 'waitaAtrian');
                 Route::get('/penjadwalan', 'penjadwalan');
+                Route::get('/jalur/{pppoe_secret}/edit', 'jalur');
+                // Route Post Only //
+                Route::post('/jalur/store', 'jalurStore');
+                Route::post('/validasireq', 'validasiReq');
            
         });
     });
     
+});
+
+
+Route::get('map',function(){
+    return view('tes');
 });
 
 

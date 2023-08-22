@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProspectPoints extends Model
 {
@@ -11,4 +12,10 @@ class ProspectPoints extends Model
     protected $table        = 'prospects_points';
     protected $guarded      = ['id'];
     use HasFactory;
+
+    public function placesPoints():BelongsTo
+    {
+        return $this->belongsTo(ProspectPlaces::class, 'place_id', 'id');
+    }
+
 }

@@ -16,6 +16,7 @@ class TiangController extends Controller
         // $result_tiang = Pole::whereNotIn('id', $place)->get();
         $result_tiang = Pole::where('area_id', null)->get();
 
+        // dd($result_tiang);
 
         return view('admin.tiang.index',[
             "tiangs" => $result_tiang,

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Sales;
 use App\Models\Sales;
 use App\Models\Pakets;
 use App\Models\Spliters;
+use App\Models\Customers;
 use App\Models\CoverageArea;
 use Illuminate\Http\Request;
 use App\Models\PsbWorkOrders;
@@ -14,6 +15,10 @@ class SalesController extends Controller
 {
     public function index()
     {
+    //    $data = Customers::with('spliter')
+    //     ->where('pppoe_secret','=','G2108232')
+    //     ->get();
+    //    dd($data);
         return view('sales.index');
     }
 

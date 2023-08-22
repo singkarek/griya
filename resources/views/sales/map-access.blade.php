@@ -9,21 +9,20 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Data Accsess</h1>
     </div>
-    <form method="post" action="/admin/area/tiang/edit/koordinat" autocomplete="">
-        @method('put')
-        @csrf
+    {{-- <form method="post" action="/admin/area/tiang/edit/koordinat" autocomplete=""> --}}
+        {{-- @method('put') --}}
+        {{-- @csrf --}}
         <div class="row mb-2">
             <div class="col">
-                <input type="text" class="form-control" value="Cari Alamat" id="alamat" name='alamat' required >
+                <input type="text" class="form-control" placeholder="Alamat atau Koordinat" id="locationInput" name='locationInput' required >
             </div>
-            <input type="text" class="form-control" value="longtitude" id="lng" name='lng' 
-            required hidden>
             <div class="col">
-            <input type="text" class="form-control" value="latitude" id="lat" name='lat' required hidden>
-                <button type="submitt" class="btn btn-primary">Cari</button>
+            {{-- <input type="text" class="form-control" value="latitude" id="lat" name='lat' required hidden> --}}
+                <button type="button" onclick="goToLocation()" class="btn btn-primary">Cari</button>
+                {{-- <button type="button" onclick="goToLocation()">Go</button> --}}
             </div>
         </div>
-    </form>
+    {{-- </form> --}}
 @endsection
 
 @section('map')
@@ -39,6 +38,9 @@
 </script>
     
 <script>
+    var map;
+    var marker;
+
 async function getLocation() {
     try {
         const position = await new Promise((resolve, reject) => {
@@ -55,45 +57,65 @@ async function getLocation() {
 async function initMap() {
     let result = JSON.parse('{!! $accsess !!}')
 
-    console.log(result)
     const data_koordinat = await getLocation()
     const myLatlng = { lat: data_koordinat.lat, lng: data_koordinat.long };
-    // console.log(myLatlng)
+    console.log(myLatlng)
     const { Map } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
     const { LatLng } = await google.maps.importLibrary("core");
     const center = new LatLng({ lat: data_koordinat.lat, lng: data_koordinat.long });
 
 
-    const map = new Map(document.getElementById("map"), {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: myLatlng,
         zoom: 18,
-        center,
         mapId: "92f4247b6a730b7a",
-    });
-
-    let infoWindow = new google.maps.InfoWindow({
-            content: "Kamu Disini !",
-            position: myLatlng,
-        });
-
-    infoWindow.open(map);
-
-    // marker = new google.maps.Marker({
-    //         map,
-    //         label: "kamu disini",
-    //         position: center
+      });
+    // // const map = new Map(document.getElementById("map"), {
+    //     zoom: 18,
+    //     center,
+    //     mapId: "92f4247b6a730b7a",
     // });
 
+    // let infoWindow = new google.maps.InfoWindow({
+    //         content: "Kamu Disini !",
+    //         position: myLatlng,
+    //     });
+
+    // infoWindow.open(map);
+
+      marker = new google.maps.Marker({
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        position: myLatlng
+      });
+
     for (const property of result) {
-        // console.log(parseFloat(property.lat))
         const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
             map,
-
             content: buildContent(property),
             position: { lat: parseFloat(property.lat), lng: parseFloat(property.lng) },
         });
     }
 }
+
+
+function goToLocation() {
+    var input = document.getElementById('locationInput').value;
+
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: input }, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+        var location = results[0].geometry.location;
+        map.setCenter(location);
+        marker.setPosition(location);
+    } else {
+        alert("Tidak ditemukan. Periksa alamat atau koordinat.");
+    }
+    });
+}
+
 
 function buildContent(property) {
     const priceTag = document.createElement("div");
@@ -104,8 +126,7 @@ function buildContent(property) {
     }else{
         priceTag.className = "price-tag";
     }
-    // priceTag.textContent = property.customers_count+" | " + property.nama_tempat+" | "+property.kode_area+" "+property.parent_ke+"."+property.spliter_ke;
-    priceTag.textContent = property.kode_area+" "+property.parent_ke+"."+property.spliter_ke+" | "+property.customers_count ;
+    priceTag.textContent = property.kode_area+" "+property.parent_ke+"."+property.spliter_ke+" - "+property.customers_count ;
     return priceTag;
 }
 

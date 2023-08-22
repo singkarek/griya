@@ -15,7 +15,7 @@
 
         html,
         body {
-            height: 82%;
+            height: 100%;
             margin: 0;
             padding: 0;
         }
@@ -108,7 +108,7 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center,
         zoom: 25,
-        // scaleControl: true,
+        scaleControl: true,
         mapId: "92f4247b6a730b7a"
     });
 
@@ -150,7 +150,6 @@ function initMap() {
         var points = e.result.points;
         var segments = e.result.segments;
 
-        // console.log({"idc" : idc, "length" : e.result.length, "lengthText" : e.result.lengthText, points  : e.result.points, segments : e.result.segments});
         const places = {"prospect_id":prospect_id,"length":e.result.length,"length_text":e.result.lengthText}
         $.ajaxSetup({
                 headers: {
@@ -163,8 +162,7 @@ function initMap() {
             data: { 
                 "prospect_id"   : prospect_id,
                 "places"        : places, 
-                "points"        : e.result.points, 
-                "segments"      : e.result.segments
+                "points"        : e.result.points
             },
             success: function(data) {
                 if (data) {
@@ -175,43 +173,16 @@ function initMap() {
         })
     });
 
-    measureTool.addListener('measure_change', (e) => {
-        // const places = {"prospect_id":prospect_id,"length":e.result.length,"length_text":e.result.lengthText}
-        // const points = e.result.points
-        // let data = { 
-        //     "places"        : places, 
-        //     "points"        : points, 
-        //     "segments"      : e.result.segments
 
-        //     }
-        // console.log(data)
-    });
 }
 
-        function showPlace(points) {
-            let latLng = [];
-
-            JSON.parse(points).forEach(point => {
-                latLng.push({
-                    lat: point.lat,
-                    lng: point.lng
-                });
-            });
-
-            measureTool.start(latLng);
-        }
-
-        function hidePlace() {
-            measureTool.end();
-        }
 
 
-
-        document.querySelector('#start')
-            .addEventListener('click', () => measureTool.start());
-        document.querySelector('#save')
-            .addEventListener('click', () => measureTool.end());
-    </script>
+    document.querySelector('#start')
+        .addEventListener('click', () => measureTool.start());
+    document.querySelector('#save')
+        .addEventListener('click', () => measureTool.end());
+</script>
 </body>
 
 </html>

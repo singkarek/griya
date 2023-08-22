@@ -42,12 +42,17 @@
     </thead>
     <tbody>
       @foreach ($customers as $customer )
+        @if($customer->subscribe_status == "pra_wo")
+          
+       
           <tr>
             <td>{{ $loop->iteration }}</td>
             <td>{{ $customer->nama }}</td>
             <td>{{ $customer->nama_layanan }}</td>
             <td>{{ $customer->alamat }}</td>
           </tr>
+
+        @endif
       @endforeach
     </tbody>
   </table>
@@ -56,7 +61,7 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-1 border-bottom">
   <h1 class="h4">Menunggu Penjadwalan</h1>
 </div>
-
+{{-- {{ $customers }} --}}
 <div class="table-responsive col-lg-9">
   <table class="table table-striped table-sm">
     <thead>
@@ -70,6 +75,7 @@
     </thead>
     <tbody>
       @foreach ($customers as $customer )
+      @if($customer->subscribe_status == "paid")
           <tr>
             <td>{{ $loop->iteration }}</td>
             <td>{{ $customer->nama }}</td>
@@ -77,6 +83,7 @@
             <td>{{ $customer->alamat }}</td>
             <td>-</td>
           </tr>
+        @endif
       @endforeach
     </tbody>
   </table>

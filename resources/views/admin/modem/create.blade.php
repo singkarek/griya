@@ -46,7 +46,6 @@
             <label for="totalharga" class="h6 form-label">Total Harga</label>
             <input type="text" class="form-control" id="totalharga" name='totalharga' required autocomplete="off" >
           </div>
-
         </div>
 
       {{-- <input type="text" class="form-control" name="serial_number[]" placeholder="Serial Number" autofocus> --}}

@@ -10,6 +10,8 @@ class OprasionalController extends Controller
 {
     public function index()
     {
+
+        
         return view('oprasional.index');
     }
 

@@ -91,8 +91,9 @@ class CustomersController extends Controller
         ->join('coverage_areas', 'spliters.coverage_areas_id', '=', 'coverage_areas.id')
         ->whereNotNull('placement_id')
         ->where('spliters.type_spliter', 'accsess')
-        ->get();
-
+        ->withCount(['customers' => function ($query) {
+            $query->where('subscribe_status', '!=' ,'terminate');
+        }])->get();
 
         return view('sales.customers.update-access', [
             'customer' => $id,
@@ -163,30 +164,36 @@ class CustomersController extends Controller
         $prospect_id = $request->prospect_id;
         $segments_raw = $request->segments;
 
+    
+
         $places = $request->places;
         $points = $request->points;
 
+        $id_place = ProspectPlaces::create($places);
+
         foreach ($points as &$item) {
-            $item['prospect_id'] = $prospect_id;
+            $item['place_id'] = $id_place->id;
         }
         unset($item); // Hapus referensi terakhir
 
-        $segments = [];
-        foreach ($segments_raw as $item) {
-            $newItem = [
-                'prospect_id' => $prospect_id,
-                'end_lat' => $item['end_location']['lat'],
-                'end_lng' => $item['end_location']['lng'],
-                'start_lat' => $item['start_location']['lat'],
-                'start_lng' => $item['start_location']['lng'],
-                'length_text' => $item['length']['text'],
-                'length_val' => $item['length']['value']
-            ];
-            array_push($segments, $newItem);
-        }
+        // $segments = [];
+        // foreach ($segments_raw as $item) {
+        //     $newItem = [
+        //         'place_id' => $id_place->id,
+        //         'end_lat' => $item['end_location']['lat'],
+        //         'end_lng' => $item['end_location']['lng'],
+        //         'start_lat' => $item['start_location']['lat'],
+        //         'start_lng' => $item['start_location']['lng'],
+        //         'length_text' => $item['length']['text'],
+        //         'length_val' => $item['length']['value']
+        //     ];
+        //     array_push($segments, $newItem);
+        // }
 
-        ProspectPlaces::insert($places);
-        ProspectSegments::insert($segments);
+        
+
+
+        // ProspectSegments::insert($segments);
         ProspectPoints::insert($points);
         Prospects::where('id', $prospect_id)->update(['status_proggres' => 'siap_pengajuan']);
 
@@ -239,9 +246,11 @@ class CustomersController extends Controller
         if(count($active) == 8){
             //return DP penuh 
             dd(['status'=>'dp penuh','prospect_id'=>$id]);
-            ProspectPlaces::where('prospect_id',$id)->delete();
-            ProspectSegments::where('prospect_id',$id)->delete();
-            ProspectPoints::where('prospect_id',$id)->delete();
+            $hapus = ProspectPlaces::where('prospect_id',$id)->first();
+            if($hapus){
+                $hapus->delete();
+            }
+            ProspectPoints::where('place_id',$hapus->id)->delete();
             Prospects::where('id', $id)->update([
                 'status_akhir' => 'access_penuh',
                 'status_proggres' => 'access',
