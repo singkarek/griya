@@ -74,18 +74,6 @@
     </ul>
 
 
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-1 pb-2 mb-1 border-bottom">
-    </div>
-
-    <li class="nav-item">
-      <form action="/" method="post">
-        @csrf
-        <button type="submit" class="nav-link border-0 bg-transparent">
-          <span data-feather="log-out"></span> Logout
-        </button>
-      </form>
-    </li>
-
   
 
   </ul>

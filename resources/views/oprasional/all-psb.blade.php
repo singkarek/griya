@@ -1,9 +1,9 @@
-@extends('sales.layouts.main')
+@extends('oprasional.layouts.main')
 
 @section('container')
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Data Prosess Customer</h1>
+    <h1 class="h2">All Pemasangan Baru</h1>
 </div>
 
 @if ($errors->any())
@@ -30,7 +30,7 @@
 
 {{-- {{ $customers }} --}}
 
-<div class="table-responsive col-lg-10">
+<div class="table-responsive col-lg-9">
   <table class="table table-striped table-sm">
     <thead>
       <tr>
@@ -38,8 +38,7 @@
         <th scope="col">Nama</th>
         <th scope="col">Paket layanan</th>
         <th scope="col">Alamat</th>
-        <th scope="col">No Tlp</th>
-        <th scope="col">Status</th>
+        <th scope="col">Tanggal</th>
       </tr>
     </thead>
     <tbody>
@@ -49,21 +48,12 @@
             <td>{{ $customer->nama }}</td>
             <td>{{ $customer->nama_layanan }}</td>
             <td>{{ $customer->alamat }}</td>
-            <td>{{ $customer->no_tlp }}</td>
-            <td>
+            <td>{{ $customer->tgl_jadwal }}</td>
+            {{-- <td>
               @if($customer->status_wo == 'prosess_validasi')
-                Menunggu validasi
+                <a href="/oprasional/antrian/requestvalidasi/{{ $customer->pppoe_secret }}/edit" class="badge btn-success"><span data-feather="edit"></span> Konfigurasi</a>
               @endif
-              @if($customer->status_wo == 'tervalidasi' & $customer->subscribe_status == 'pra_wo')
-                Menunggu payment
-              @endif
-              @if($customer->status_wo == 'tervalidasi' & $customer->subscribe_status == 'paid' & $customer->status_proggres == null)
-                Menunggu Penjadwalan
-              @endif
-              @if($customer->status_wo == 'tervalidasi' & $customer->subscribe_status == 'paid' & $customer->status_proggres == 'jadwal_terbit')
-                Menunggu Pemasangan
-              @endif
-            </td>
+            </td> --}}
           </tr>
       @endforeach
     </tbody>

@@ -17,12 +17,12 @@
       </h6>
   
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('admin/area*') ? 'active' : ''}}" aria-current="page" href="">
+        {{-- <a class="nav-link {{ Request::is('admin/area*') ? 'active' : ''}}" aria-current="page" href="">
           <span data-feather="layers"></span> Pemasangan Baru Today
-        </a>
+        </a> --}}
       </li>
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('validasi') ? 'active' : ''}}" aria-current="page" href="">
+        <a class="nav-link {{ Request::is('oprasional/allpsb') ? 'active' : ''}}" aria-current="page" href="/oprasional/allpsb">
           <span data-feather="chevrons-right"></span> All Pemasangan Baru
         </a>
       </li>
@@ -45,11 +45,7 @@
           <span data-feather="clock"></span> Wait List
         </a>
       </li>
-      {{-- <li class="nav-item">
-        <a class="nav-link {{ Request::is('oprasional/antrian/waitantrian') ? 'active' : ''}}" aria-current="page" href="/oprasional/antrian/waitantrian">
-          <span data-feather="pause"></span> Wait Dijadwalkan
-        </a>
-      </li> --}}
+
 
       <li class="nav-item">
         <a class="nav-link {{ Request::is('oprasional/antrian/penjadwalan') ? 'active' : ''}}" aria-current="page" href="/oprasional/antrian/penjadwalan">
@@ -71,16 +67,6 @@
         </a>
       </li>
 
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-      </div>
-      <li class="nav-item">
-        <form action="#" method="post">
-          @csrf
-          <button type="submit" class="nav-link border-0 bg-transparent">
-            <span data-feather="log-out"></span> Logout
-          </button>
-        </form>
-      </li>
 
   
 

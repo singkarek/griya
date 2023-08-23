@@ -8,6 +8,8 @@
     <h1 class="h2">Selamat Datang Oprasional</h1>
   </div>
 
+  {{-- {{ auth()->user()->division_id }} --}}
 
+  {{ $customers }}
 
 @endsection

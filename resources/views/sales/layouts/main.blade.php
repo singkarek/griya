@@ -19,7 +19,7 @@
   </head>
   <body>
     
-    @include('sales.layouts.header')
+    @include('header.header')
 
     <div class="container-fluid">
       <div class="row">

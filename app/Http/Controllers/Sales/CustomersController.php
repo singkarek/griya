@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Sales;
 
+use App\Models\User;
 use App\Models\Pakets;
 use App\Models\Metodes;
 use App\Models\Spliters;
@@ -22,22 +23,41 @@ class CustomersController extends Controller
 {
     public function index()
     {
+        $nip = auth()->user()->karyawan_nip;
+        $admin = auth()->user()->is_admin;
+
+        $customer = Prospects::where([
+            ['status_akhir','=','closing'],
+            ['status_proggres','!=','proses_pengajuan'],
+            ['sales_nip','=',$nip],
+            ['is_admin','=',$admin]
+            ])->get();
         return view('sales.customers.index',[
-            "customers" => Prospects::where([['status_akhir','=','closing'],['status_proggres','!=','proses_pengajuan']])->get()
+            "customers" => $customer
         ]);   
     }
 
     public function create()
     {
+        $nip = auth()->user()->karyawan_nip;
+        $admin = auth()->user()->is_admin;
+
         return view('sales.customers.create',[
             'metodes'       => Metodes::all(),
-            'layananpakets' => Pakets::all()
+            'layananpakets' => Pakets::all(),
+            'sales_survey' => User::where('division_id','1')->get(),
+            'sales_nip' => $nip,
+            'is_admin' => $admin
         ]);
     }
 
     public function store(Request $request)
     {   
+        // dd($request);
         $validateData = $request->validate([
+            'sales_nip' => 'required',
+            'is_admin' => 'required',
+            'type_customer' => 'required',
             'metodes_id' => 'required',
             'nama'   => 'required|max:255',
             'no_tlp' => 'required|max:20',
@@ -47,24 +67,14 @@ class CustomersController extends Controller
             'service_packages_id' => 'required|max:11'
         ]);
 
-        $validateData['sales_id'] = 1;
         $validateData['status_awal'] = 'closing';
         $validateData['status_akhir'] = 'closing';
-        $validateData['status_proggres'] = 'foto_rumah';
-        // dd($tes);
-
+        $validateData['status_proggres'] = 'koordinat';
+    
         Prospects::create($validateData);
 
         return redirect('/sales/customers')->with('success', 'Data berhasil ditambahkan !');
     }
-
-    // public function detail(Prospects $customer)
-    // {
-    //     // dd($customer);
-    //     return view('sales/prospect/detail',[
-    //         'customer' => $customer
-    //     ]);
-    // }
 
     public function editFotoRumah(Prospects $id)
     {
@@ -105,12 +115,12 @@ class CustomersController extends Controller
     {
         
         $data_customer = Prospects::
-                            select('prospects.*','prospects.id as prospects_id', 'prospects.lat as lat_prospect','prospects.lng as lng_prospect' , 
-                                'griya_coverage.spliters.*','griya_coverage.placements.*')
-                            ->join('griya_coverage.spliters','prospects.spliter_id','=','griya_coverage.spliters.id')
-                            ->join('griya_coverage.coverage_areas','prospects.coverage_areas_id','=','griya_coverage.coverage_areas.id')
-                            ->join('griya_coverage.placements','griya_coverage.spliters.placement_id','=','griya_coverage.placements.id')
-                            ->where('prospects.id', $id)->get();
+                select('prospects.*','prospects.id as prospects_id', 'prospects.lat as lat_prospect','prospects.lng as lng_prospect' , 
+                    'griya_coverage.spliters.*','griya_coverage.placements.*')
+                ->join('griya_coverage.spliters','prospects.spliter_id','=','griya_coverage.spliters.id')
+                ->join('griya_coverage.coverage_areas','prospects.coverage_areas_id','=','griya_coverage.coverage_areas.id')
+                ->join('griya_coverage.placements','griya_coverage.spliters.placement_id','=','griya_coverage.placements.id')
+                ->where('prospects.id', $id)->get();
         // dd($data_customer);
         return view('sales.customers.update-jalur', [
             'customer' => $data_customer[0]
@@ -164,8 +174,6 @@ class CustomersController extends Controller
         $prospect_id = $request->prospect_id;
         $segments_raw = $request->segments;
 
-    
-
         $places = $request->places;
         $points = $request->points;
 
@@ -176,24 +184,6 @@ class CustomersController extends Controller
         }
         unset($item); // Hapus referensi terakhir
 
-        // $segments = [];
-        // foreach ($segments_raw as $item) {
-        //     $newItem = [
-        //         'place_id' => $id_place->id,
-        //         'end_lat' => $item['end_location']['lat'],
-        //         'end_lng' => $item['end_location']['lng'],
-        //         'start_lat' => $item['start_location']['lat'],
-        //         'start_lng' => $item['start_location']['lng'],
-        //         'length_text' => $item['length']['text'],
-        //         'length_val' => $item['length']['value']
-        //     ];
-        //     array_push($segments, $newItem);
-        // }
-
-        
-
-
-        // ProspectSegments::insert($segments);
         ProspectPoints::insert($points);
         Prospects::where('id', $prospect_id)->update(['status_proggres' => 'siap_pengajuan']);
 
@@ -203,9 +193,6 @@ class CustomersController extends Controller
     public function pengajuanPasang($id)
     {
         [$prospect] = Prospects::where('id', $id)->get();
-        
-        // [$spliter_cari] = Spliters::withCount('customers')
-        //     ->where([['type_spliter','=','accsess'],['id','=',$prospect->spliter_id]])->get();
 
         //saat customer ditetapkan terminate oleh system maka system akan membuat record baru ditable khusus agar ada data dan diketahui siapa saja yang harus di hapus user pppoe dan di olt (record ini akan berhasilkan status true jika sudah di lakukan penghapusan).
         //saat status_subscribe menjadi terminate dan kolom port_acces masih ada nilai, yang akan menjadikan pada wo ada kolom lepas port menjadi true, berfungsi untuk menandakan bahwa teknisi perlu melakukan pelepasan pada port acces dilapangan,
@@ -327,7 +314,7 @@ class CustomersController extends Controller
         ];
 
         $customer = [
-            'prospects_id'  => $prospect->id , 'sales_id' => $prospect->sales_id ,'is_admin' => $prospect->is_admin,
+            'prospects_id'  => $prospect->id , 'sales_nip' => $prospect->sales_nip ,'is_admin' => $prospect->is_admin, 'type_customer' => $prospect->type_customer,
             'pppoe_secret'  => $pppoe_secret , 'nama' => $prospect->nama ,
             'no_tlp'        => $prospect->no_tlp , 'service_packages_id'=> $prospect->service_packages_id ,
             'coverage_areas_id' => $prospect->coverage_areas_id , 'spliter_id' => $prospect->spliter_id ,

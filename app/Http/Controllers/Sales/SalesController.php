@@ -37,14 +37,7 @@ class SalesController extends Controller
             ->withCount(['customers' => function ($query) {
                     $query->where('subscribe_status', '!=' ,'terminate');
                 }])->get();
-        
-        // $accsess = Spliters::withCount('customers')->get();
-        // $accsess = Spliters::withCount(['customers' => function ($query) {
-        //     $query->where('subscribe_status', '!=' ,'terminate');
-        // }])->get();
-
-        // dd($accsess);
-                // ->WHERE('placements.area_id',$id)->get();
+                
         return view('sales.map-access',[
             'accsess' => $accsess
         ]);
@@ -52,14 +45,16 @@ class SalesController extends Controller
 
     public function prosesPemasangan()
     {   
-        $id_sales = 1;
+        $nip = auth()->user()->karyawan_nip;
+        $admin = auth()->user()->is_admin;
+
         $work_orders_psb = PsbWorkOrders::
             join('griya_customers.customers','psb_work_orders.pppoe_secret','=','griya_customers.customers.pppoe_secret')
             ->join('griya_customers.customers_alamat_maps','psb_work_orders.pppoe_secret','=','griya_customers.customers_alamat_maps.pppoe_secret')
             ->join('griya_customers.customers_alamat_terpasang','psb_work_orders.pppoe_secret','=','griya_customers.customers_alamat_terpasang.pppoe_secret')
             ->join('griya_company.service_packages','griya_customers.customers.service_packages_id','=','griya_company.service_packages.id')
             ->where('status_wo','!=','terpasang')
-            ->where('sales_id','=',$id_sales)->get();
+            ->where('sales_nip','=',$nip)->get();
             // dd($work_orders_psb);
         return view('sales.progres-pemasangan',[
             'customers' => $work_orders_psb

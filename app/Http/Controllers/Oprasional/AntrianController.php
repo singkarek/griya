@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Oprasional;
 
+use App\Models\User;
 use App\Models\Modems;
 use Illuminate\Http\Request;
 use App\Models\PsbWorkOrders;
 use App\Models\ProspectPlaces;
 use App\Models\ProspectPoints;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
+use App\Models\Customers;
 
 class AntrianController extends Controller
 {
@@ -46,7 +49,7 @@ class AntrianController extends Controller
         ]);
     }
 
-    public function waitPayment()
+    public function waitList()
     {
         $wait_payment = PsbWorkOrders::
             join('griya_customers.customers','psb_work_orders.pppoe_secret','=','griya_customers.customers.pppoe_secret')
@@ -58,6 +61,7 @@ class AntrianController extends Controller
                   ->orWhere('subscribe_status', '=', 'paid');
         })
         ->where('status_wo','=','tervalidasi')
+        ->where('status_proggres','=',null)
         ->get();
 
         // dd($wait_payment);
@@ -95,14 +99,19 @@ class AntrianController extends Controller
         ->join('griya_coverage.coverage_areas','griya_customers.customers.coverage_areas_id','=','griya_coverage.coverage_areas.id')
         ->join('griya_coverage.placements','griya_coverage.spliters.placement_id','=','griya_coverage.placements.id')
         ->where('griya_customers.customers.subscribe_status','=','paid')
+        ->where('status_proggres','=',null)
         ->get();
+        
         $modem = Modems::where('status','ready')->get();
+
+        $teknisi = User::where('division_id','2')->get();
 
         // dd($customers);
     
         return view('oprasional.new-customers.penjadwalan',[
             'customers' => $customers,
-            'modems' => $modem
+            'modems' => $modem,
+            'teknisi' => $teknisi
         ]);
     }
 
@@ -164,6 +173,35 @@ class AntrianController extends Controller
         // dd($request->pppoe_secret);
         PsbWorkOrders::where('pppoe_secret',$request->pppoe_secret)->update(['status_wo'=>'tervalidasi']);
         return redirect('/oprasional/antrian/requestvalidasi'.$request->area_id)->with('success', 'berhasil Tervalidasi!');
+    }
+
+    public function penjadwalanUpdate(Request $request)
+    {   
+        $validatedata = $request->validate([
+            'pppoe_secret' => 'required',
+            'katim_id' => 'required',
+            'tgl_jadwal' => 'required|date',
+            'sn_modem' => 'required'
+        ]);
+
+        $validatedata['tgl_jadwal'] = Carbon::createFromFormat('d-m-Y', $validatedata['tgl_jadwal'])->format('Y-m-d');
+
+
+        $modem = [
+            'status' => 'terpakai',
+            'pppoe_secret' => $validatedata['pppoe_secret']
+        ];
+
+        $wo = [
+            'status_proggres' => 'jadwal_terbit',
+            'katim_id' => $validatedata['katim_id'],
+            'tgl_jadwal' => $validatedata['tgl_jadwal']
+        ];
+        Customers::where('pppoe_secret', $validatedata['pppoe_secret'])->update(['sn_modem' => $validatedata['sn_modem']]);
+        PsbWorkOrders::where('pppoe_secret', $validatedata['pppoe_secret'])->update($wo);
+        Modems::where('sn',$validatedata['sn_modem'])->update($modem);
+        return redirect('/oprasional/antrian/penjadwalan')->with('success','Berhasil Dijadwalkan');
+        // dd($modem);
     }
 
 }

@@ -9,6 +9,18 @@
     <div class="navbar-nav">
       <div class="nav-item text-nowrap">
 
+        <div class="row mx-5">
+          <div class="col navbar-brand-a ">
+            <a class="col navbar-brand-b {{ Request::is('sales*') ? 'navbar-brand-b.active' : ''}}" style="text-decoration: none;" href="/sales">Sales</a>
+          </div>
+          <div class="col navbar-brand-a ">
+            <a class="col navbar-brand-b {{ Request::is('oprasional*') ? 'active' : ''}} " style="text-decoration: none;" href="/oprasional">Oprasional</a>
+          </div>
+          <div class="col navbar-brand-a ">
+            <a class="navbar-brand-b " style="text-decoration: none;" href="/admin">Admin</a>
+          </div>
+        </div>
+
       </div>
     </div>
   </header>

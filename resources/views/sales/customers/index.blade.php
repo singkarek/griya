@@ -29,7 +29,12 @@
 @endif
 
 <div class="table-responsive col-lg-9">
-  <a href="/sales/customers/create" class="btn btn-primary mb-3">Customer Baru</a>
+@cannot('admin')
+<a href="/sales/customers/create" class="btn btn-primary mb-3">Customer Baru</a>
+  
+@endcannot
+
+
   <table class="table table-striped table-sm">
     <thead>
       <tr>

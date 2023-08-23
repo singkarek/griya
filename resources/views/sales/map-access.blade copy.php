@@ -24,15 +24,18 @@
         </div>
     {{-- </form> --}}
 @endsection
+
 @section('map')
     <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div id="map"></div>
     </div>
 @endsection
+
 <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxdJw7g37bdvtT-zVLi6ab9NOG_EKY-CA&callback=initMap&v=weekly"
     defer
-></script>
+    >
+</script>
     
 <script>
     var map;
@@ -68,7 +71,18 @@ async function initMap() {
         zoom: 18,
         mapId: "92f4247b6a730b7a",
       });
+    // // const map = new Map(document.getElementById("map"), {
+    //     zoom: 18,
+    //     center,
+    //     mapId: "92f4247b6a730b7a",
+    // });
 
+    // let infoWindow = new google.maps.InfoWindow({
+    //         content: "Kamu Disini !",
+    //         position: myLatlng,
+    //     });
+
+    // infoWindow.open(map);
 
       marker = new google.maps.Marker({
         map: map,
@@ -118,7 +132,5 @@ function buildContent(property) {
 
 window.initMap = initMap;
 </script> 
-
-
 
 
