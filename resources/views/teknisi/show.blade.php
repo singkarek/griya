@@ -1,10 +1,16 @@
-@extends('oprasional.layouts.main')
+@extends('teknisi.layouts.main')
 
 @section('container')
 
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">All Pemasangan Baru</h1>
-</div>
+
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    {{-- <h1 class="h2">selamat datang, {{ auth()->user()->name }}</h1> --}}
+    <h1 class="h2">Teknisi</h1>
+  </div>
+
+{{-- {{ auth()->user()->is_admin }} --}}
+
+{{-- {{ $customers }} --}}
 
 @if ($errors->any())
 <div class="alert alert-danger col-lg-9">
@@ -28,18 +34,18 @@
     </div>
 @endif
 
-{{-- {{ $customers }} --}}
+{{ $customers }}
 
 <div class="table-responsive col-lg-9">
-  <table class="table table-striped table-sm">
+  {{-- <table class="table table-striped table-sm">
     <thead>
       <tr>
         <th scope="col">#</th>
         <th scope="col">Nama</th>
         <th scope="col">Paket layanan</th>
         <th scope="col">Alamat</th>
-        <th scope="col">Tanggal</th>
-        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+        <th scope="col">Detail</th>
       </tr>
     </thead>
     <tbody>
@@ -49,32 +55,29 @@
             <td>{{ $customer->nama }}</td>
             <td>{{ $customer->nama_layanan }}</td>
             <td>{{ $customer->alamat }}</td>
-            <td>{{ $customer->tgl_jadwal }}</td>
             <td>
               @if($customer->status_proggres == 'jadwal_terbit')
-                Menunggu Penarikan
+                <a href="/teknisi/{{ $customer->pppoe_secret }}/penarikan" class="badge btn-success"><span data-feather="edit"></span> Mulai Penarikan</a>
               @endif
               @if($customer->status_proggres == 'mulai_penarikan')
-                Prosess Penarikan
+                <a href="/teknisi/{{ $customer->pppoe_secret }}/ajukanreg" class="badge btn-success"><span data-feather="edit"></span> Ajukan Regist</a>
               @endif
               @if($customer->status_proggres == 'ajukan_reg')
-                Prosess Regist
+                Menunggu Registrasi
               @endif
-              @if($customer->status_proggres == 'reg_done')
-              {{-- <a href="/oprasional/done/{{ $customer->pppoe_secret }}" class="badge btn-success"><span data-feather="edit"></span> Done</a> --}}
-              <form action="/oprasional/done/{{ $customer->pppoe_secret }}" method="post" class="d-inline">
-                  {{-- @method('delete') --}}
-                  @csrf
-                  <button class="badge btn-success border-0" onclick="return confirm('Yakin hapus Post ?')"><span data-feather="check"></span> Validasi</button>
-              </form>
+            </td>
+            <td>
+              @if($customer->status_proggres == 'jadwal_terbit')
+              <a href="/teknisi/{{ $customer->pppoe_secret }}/penarikan" class="badge btn-warning"><span data-feather="edit"></span> Detail</a>
+              @else
+              -
               @endif
             </td>
           </tr>
       @endforeach
     </tbody>
   </table>
-</div>
+</div> --}}
 
 
 @endsection
-

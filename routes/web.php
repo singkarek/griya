@@ -38,6 +38,11 @@ Route::middleware('admin')->group(function (){
         Route::controller(OprasionalController::class)->group(function (){
             Route::get('/', 'index');
             Route::get('/allpsb', 'allPsb');
+            Route::get('/regist', 'regist');
+            Route::get('/regist/{pppoe_secret}/detail', 'registDetail');
+            // Route Post Only //
+            Route::post('/done/{pppoe_secret}', 'doneCustomer');
+            Route::post('/regist/store', 'registStore');
         });
             Route::prefix('antrian')->group(function (){
                 Route::controller(AntrianController::class)->group(function (){
@@ -57,11 +62,14 @@ Route::middleware('admin')->group(function (){
     });
 });
 
-Route::prefix('teknisi')->group(function (){
-    Route::controller(TeknisiController::class)->group(function (){
-        Route::get('/', 'index');
-        // Route::get('/prosespemasangan', 'prosesPemasangan');
-        // Route::get('/maps-access', 'mapsAccess');
+Route::middleware('teknisi')->group(function (){
+    Route::prefix('teknisi')->group(function (){
+        Route::controller(TeknisiController::class)->group(function (){
+            Route::get('/', 'index');
+            Route::get('/{pppoe_secret}/penarikan', 'penarikan');
+            Route::get('/{pppoe_secret}/ajukanreg', 'ajukanreg');
+            Route::get('/{pppoe_secret}/show', 'show');
+        });
     });
 });
 

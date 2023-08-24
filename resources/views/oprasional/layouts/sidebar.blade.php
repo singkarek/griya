@@ -62,7 +62,7 @@
       </h6>
 
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('validasi') ? 'active' : ''}}" aria-current="page" href="">
+        <a class="nav-link {{ Request::is('oprasional/regist*') ? 'active' : ''}}" aria-current="page" href="/oprasional/regist">
           <span data-feather="file-text"></span> Registrasi
         </a>
       </li>

@@ -8,6 +8,9 @@
           Dashboard
         </a>
       </li>
+      @cannot('admin')
+        
+      
       <li class="nav-item">
         <a class="nav-link {{ Request::is('sales/customers*') ? 'active' : ''}}" href="/sales/customers">
           <span data-feather="user"></span>
@@ -31,7 +34,7 @@
           Survey Admin
         </a>
       </li> --}}
-
+      @endcannot
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
       </div>
     

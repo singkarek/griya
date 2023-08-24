@@ -39,7 +39,7 @@
         <th scope="col">Paket layanan</th>
         <th scope="col">Alamat</th>
         <th scope="col">Tanggal</th>
-        <th scope="col">Status</th>
+        <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -51,23 +51,7 @@
             <td>{{ $customer->alamat }}</td>
             <td>{{ $customer->tgl_jadwal }}</td>
             <td>
-              @if($customer->status_proggres == 'jadwal_terbit')
-                Menunggu Penarikan
-              @endif
-              @if($customer->status_proggres == 'mulai_penarikan')
-                Prosess Penarikan
-              @endif
-              @if($customer->status_proggres == 'ajukan_reg')
-                Prosess Regist
-              @endif
-              @if($customer->status_proggres == 'reg_done')
-              {{-- <a href="/oprasional/done/{{ $customer->pppoe_secret }}" class="badge btn-success"><span data-feather="edit"></span> Done</a> --}}
-              <form action="/oprasional/done/{{ $customer->pppoe_secret }}" method="post" class="d-inline">
-                  {{-- @method('delete') --}}
-                  @csrf
-                  <button class="badge btn-success border-0" onclick="return confirm('Yakin hapus Post ?')"><span data-feather="check"></span> Validasi</button>
-              </form>
-              @endif
+              <a href="/oprasional/regist/{{ $customer->pppoe_secret }}/detail" class="badge btn-success"><span data-feather="edit"></span> Konfigurasi</a>
             </td>
           </tr>
       @endforeach

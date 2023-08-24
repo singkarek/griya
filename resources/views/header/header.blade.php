@@ -15,6 +15,9 @@
           <a class="col navbar-brand-b {{ Request::is('sales*') ? 'active' : ''}}" style="text-decoration: none;" href="/sales">Sales</a>
         </div>
         <div class="col navbar-brand-a ">
+          <a class="col navbar-brand-b {{ Request::is('teknisi*') ? 'active' : ''}}" style="text-decoration: none;" href="/teknisi">Teknisi</a>
+        </div>
+        <div class="col navbar-brand-a ">
           <a class="col navbar-brand-b {{ Request::is('oprasional*') ? 'active' : ''}}" style="text-decoration: none;" href="/oprasional">Oprasional</a>
         </div>
         <div class="col navbar-brand-a ">

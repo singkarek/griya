@@ -30,6 +30,8 @@ class LoginController extends Controller
             $request->session()->regenerate();
             if(auth()->user()->division_id == 1){
                 return redirect()->intended('/sales');
+            }else if(auth()->user()->division_id == 2){
+                return redirect()->intended('/teknisi');
             }else{
                 return redirect()->intended('/admin');
             }

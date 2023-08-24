@@ -63,6 +63,12 @@
               @if($customer->status_wo == 'tervalidasi' & $customer->subscribe_status == 'paid' & $customer->status_proggres == 'jadwal_terbit')
                 Menunggu Pemasangan
               @endif
+              @if($customer->status_wo == 'tervalidasi' & $customer->subscribe_status == 'paid' & $customer->status_proggres == 'mulai_penarikan' || $customer->status_proggres == 'ajukan_reg')
+                Prosess Pemasangan
+              @endif
+              @if($customer->status_wo == 'tervalidasi' & $customer->subscribe_status == 'paid' & $customer->status_proggres == 'reg_done')
+                Pemasangan selesai
+              @endif
             </td>
           </tr>
       @endforeach

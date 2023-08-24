@@ -10,6 +10,6 @@
 
   {{-- {{ auth()->user()->division_id }} --}}
 
-  {{ $customers }}
+  {{-- {{ $customers }} --}}
 
 @endsection
