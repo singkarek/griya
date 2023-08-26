@@ -85,6 +85,7 @@ class TeknisiController extends Controller
         ->join('griya_company.service_packages','griya_customers.customers.service_packages_id','=','griya_company.service_packages.id')
         ->join('griya_coverage.spliters','griya_customers.customers.spliter_id','=','griya_coverage.spliters.id')
         ->join('griya_coverage.coverage_areas','griya_customers.customers.coverage_areas_id','=','griya_coverage.coverage_areas.id')
+        ->join('griya_oprasional.prospects_places','griya_customers.customers.prospects_id','=','griya_oprasional.prospects_places.prospect_id')
         ->join('griya_coverage.placements','griya_coverage.spliters.placement_id','=','griya_coverage.placements.id')
         ->where('griya_customers.customers.pppoe_secret','=',$pppoe_secret)
         ->get();

@@ -96,7 +96,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="no_tlp" class="h6 form-label">No Tlp</label>
+            <label for="no_tlp" class="h6 form-label">No Tlp (628xxxxxx)</label>
             <input type="number" class="form-control @error('no_tlp') is-invalid @enderror" id="no_tlp" name='no_tlp' required value="{{ 
                 old('no_tlp') }}">
             @error('no_tlp')
@@ -161,9 +161,17 @@
 
         sales_nip_div.hidden = false;
   }else{
+    // type_customer.innerHTML = `
+    //       <option value="1">Personal</option>
+    //   `;
+
     type_customer.innerHTML = `
           <option value="1">Personal</option>
+          <option value="2">Business</option>
+          <option value="3">Fasilitas Umum</option>
+          <option value="" selected>--- Pilih Type Pelanggan ---</option>
       `;
+      type_customer_div.hidden = false;
     
       const option = document.createElement('option');
       option.value = sales_nip_nonadmin.value;

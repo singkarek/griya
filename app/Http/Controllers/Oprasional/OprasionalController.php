@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\PsbWorkOrders;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 
 class OprasionalController extends Controller
 {
@@ -81,13 +82,22 @@ class OprasionalController extends Controller
 
     public function doneCustomer($pppoe_secret)
     {
-        $cust = Customers::where('pppoe_secret',$pppoe_secret)->get();
+        $cust = Customers::where('pppoe_secret',$pppoe_secret)
+        ->join('griya_company.service_packages','griya_customers.customers.service_packages_id','=','griya_company.service_packages.id')->get();
         $prospect_id = $cust[0]['prospects_id']; 
-
-        // dd($prospect_id);
         $tstamp = Carbon::now()->format('Y-m-d H:i:s');
         $date = Carbon::now()->format('Y-m-d');
         $expdate = Carbon::now()->addDays(30)->format('Y-m-d');
+
+        $nomer_tlp = $cust[0]['no_tlp'];
+        $nama = $cust[0]['nama'];
+        $nomor_pelanggan = $cust[0]['pppoe_secret'];
+        $nama_layanan = $cust[0]['nama_layanan'];
+        $harga_layanan = $cust[0]['harga'];
+        $va = $cust[0]['va'];
+        $type_customer = $cust[0]['type_customer'];
+
+        // dd($cust);
 
         $customer = [
             'subscribe_start' => $date,
@@ -99,13 +109,38 @@ class OprasionalController extends Controller
 
         $prospect = ['status_akhir' => 'selesai'];
 
+        if($type_customer == 3){
+            $customer['subscribe_expired'] = null;
+            Customers::where('pppoe_secret',$pppoe_secret)->update($customer);
+            PsbWorkOrders::where('pppoe_secret',$pppoe_secret)->update($wo);
+            Prospects::where('id',$prospect_id)->update($prospect);
+            return redirect('/oprasional/allpsb')->with('success', 'Validasi Berhasil !');
+        }
+
+        Http::asForm()->post(env('WHATSAPP'), [
+            'number' => $nomer_tlp,
+            'message' => 'Terimakasih atas kepercayaan anda untuk berlanggan internet GRIYANET.'."\n"."\n".
+                         'Kami Menginformasikan Layanan INTERNET Anda Telah Aktif :'."\n"."\n".
+                         'Nama Pelanggan : '.$nama."\n".
+                         'Nomor Pelanggan : '. $nomor_pelanggan."\n".
+                         'Paket Berlanggan : '.$nama_layanan."\n".
+                         'Harga Layanan : '.'Rp. '.$harga_layanan."\n".
+                         'Jatuh Tempo Selanjutnya : '.$expdate."\n"."\n".
+
+                        'Pembayaran selanjutnya dapat dilakukan melalui Bank atau retail di bawah ini, dengan Virtual Account sebagai berikut :'."\n"."\n".
+                        'BCA : '.'19005614'.$va."\n".
+                        'Mandiri : '.'19005614'.$va."\n".
+                        'BRI : '.'142321'.$va."\n".
+                        'Alfamart : '.'352220'.$va."\n",
+                        'Indomart : '.'352221'.$va."\n",
+        ]);
+
+
         Customers::where('pppoe_secret',$pppoe_secret)->update($customer);
         PsbWorkOrders::where('pppoe_secret',$pppoe_secret)->update($wo);
         Prospects::where('id',$prospect_id)->update($prospect);
 
         return redirect('/oprasional/allpsb')->with('success', 'Validasi Berhasil !');
-
-        // dd($expdate);
     }
 
 }

@@ -57,7 +57,7 @@
             <td>{{ $customer->alamat }}</td>
             <td>
               @if($customer->status_proggres == 'jadwal_terbit')
-                <a href="/teknisi/{{ $customer->pppoe_secret }}/penarikan" class="badge btn-success"><span data-feather="edit"></span> Mulai Penarikan</a>
+                <a href="/teknisi/{{ $customer->pppoe_secret }}/penarikan" onclick="return confirm('Yakin Mulai Pemasangan ?')" class="badge btn-success"><span data-feather="edit"></span> Mulai Penarikan</a>
               @endif
               @if($customer->status_proggres == 'mulai_penarikan')
                 <a href="/teknisi/{{ $customer->pppoe_secret }}/ajukanreg" class="badge btn-success"><span data-feather="edit"></span> Ajukan Regist</a>
@@ -67,11 +67,7 @@
               @endif
             </td>
             <td>
-              @if($customer->status_proggres == 'jadwal_terbit')
               <a href="/teknisi/{{ $customer->pppoe_secret }}/show" class="badge btn-warning"><span data-feather="edit"></span> Detail</a>
-              @else
-              -
-              @endif
             </td>
           </tr>
       @endforeach

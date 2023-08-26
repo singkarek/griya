@@ -34,50 +34,74 @@
     </div>
 @endif
 
-{{ $customers }}
+{{-- {{ $customers }} --}}
 
-<div class="table-responsive col-lg-9">
-  {{-- <table class="table table-striped table-sm">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nama</th>
-        <th scope="col">Paket layanan</th>
-        <th scope="col">Alamat</th>
-        <th scope="col">Action</th>
-        <th scope="col">Detail</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach ($customers as $customer )
-          <tr>
-            <td>{{ $loop->iteration }}</td>
-            <td>{{ $customer->nama }}</td>
-            <td>{{ $customer->nama_layanan }}</td>
-            <td>{{ $customer->alamat }}</td>
-            <td>
-              @if($customer->status_proggres == 'jadwal_terbit')
-                <a href="/teknisi/{{ $customer->pppoe_secret }}/penarikan" class="badge btn-success"><span data-feather="edit"></span> Mulai Penarikan</a>
-              @endif
-              @if($customer->status_proggres == 'mulai_penarikan')
-                <a href="/teknisi/{{ $customer->pppoe_secret }}/ajukanreg" class="badge btn-success"><span data-feather="edit"></span> Ajukan Regist</a>
-              @endif
-              @if($customer->status_proggres == 'ajukan_reg')
-                Menunggu Registrasi
-              @endif
-            </td>
-            <td>
-              @if($customer->status_proggres == 'jadwal_terbit')
-              <a href="/teknisi/{{ $customer->pppoe_secret }}/penarikan" class="badge btn-warning"><span data-feather="edit"></span> Detail</a>
-              @else
-              -
-              @endif
-            </td>
-          </tr>
-      @endforeach
-    </tbody>
-  </table>
-</div> --}}
+{{-- <div class="table-responsive col-lg-11"> --}}
+
+  <div class="form-group mb-2">
+    <div class="row mb-2">
+      <div class="col-md-3">
+        <label for="area" class="h6 form-label">Nama</label>
+        <input type="text" class="form-control" id="nama" name='nama' disabled value="{{ old('nama',$customers[0]->nama) }}">
+      </div>
+      <div class="col-md-3">
+        <label for="alamat" class="h6 form-label">Alamat</label>
+        <input type="text" class="form-control" id="alamat" name='alamat' disabled  value="{{ old('alamat',$customers[0]->alamat) }}">
+      </div>
+      <div class="col-md-2">
+        <label for="no_tlp" class="h6 form-label">Tlp(WA)</label>
+        <input type="text" class="form-control" id="no_tlp" name='no_tlp' disabled value="{{ old('nama',$customers[0]->no_tlp) }}">
+      </div>
+
+    </div>
+</div>
+<div class="form-group mb-2">
+    <div class="row mb-2">
+      <div class="col-md-2">
+        <label for="nama_layanan" class="h6 form-label">Paket Layanan</label>
+        <input type="text" class="form-control" id="nama_layanan" name='nama_layanan' disabled value="{{ old('nama_layanan',$customers[0]->nama_layanan) }}">
+      </div>
+      <div class="col-md-2">
+        <label for="harga" class="h6 form-label">Paket Layanan</label>
+        <input type="text" class="form-control" id="harga" name='harga' disabled value="{{ old('harga',$customers[0]->harga) }}">
+      </div>
+
+    </div>
+</div>
+<div class="form-group mb-4">
+    <div class="row mb-2">
+      <div class="col-md-3">
+        <label for="area" class="h6 form-label">Area</label>
+        <input type="text" class="form-control" id="area" name='area' disabled value="{{ old('harga',$customers[0]->nama_area) }}">
+      </div>
+      <div class="col-md-3">
+        <label for="access" class="h6 form-label">Access</label>
+        <input type="text" class="form-control" id="access" name='access' disabled value="{{ old('access', $customers[0]->kode_area." ".$customers[0]->parent_ke.".".$customers[0]->spliter_ke ) }}">
+      </div>
+      <div class="col-md-3">
+        <label for="access" class="h6 form-label">port ke</label>
+        <input type="text" class="form-control" id="access" name='access' disabled value="{{ old('access', $customers[0]->port_access) }}">
+      </div>
+    </div>
+</div>
+<div class="form-group mb-4">
+    <div class="row mb-2">
+      <div class="col-md-3">
+        <label for="area" class="h6 form-label">Perkiraan Panjang kabel</label>
+        <input type="text" class="form-control" id="area" name='area' disabled value="{{ old('harga',$customers[0]->length_text) }}">
+      </div>
+      {{-- <div class="col-md-3">
+        <label for="access" class="h6 form-label">Access</label>
+        <input type="text" class="form-control" id="access" name='access' disabled value="{{ old('access', $customers[0]->kode_area." ".$customers[0]->parent_ke.".".$customers[0]->spliter_ke ) }}">
+      </div>
+      <div class="col-md-3">
+        <label for="access" class="h6 form-label">port ke</label>
+        <input type="text" class="form-control" id="access" name='access' disabled value="{{ old('access', $customers[0]->port_access) }}">
+      </div>
+    </div> --}}
+</div>
+
+{{-- </div> --}}
 
 
 @endsection

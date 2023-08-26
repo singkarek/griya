@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Oprasional;
 
 use App\Models\User;
 use App\Models\Modems;
+use App\Models\Customers;
+use App\Models\VaCustomer;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PsbWorkOrders;
 use App\Models\ProspectPlaces;
 use App\Models\ProspectPoints;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
-use App\Models\Customers;
+use Illuminate\Support\Facades\Http;
 
 class AntrianController extends Controller
 {
@@ -170,9 +173,48 @@ class AntrianController extends Controller
 
     public function validasiReq(Request $request)
     {
-        // dd($request->pppoe_secret);
+
+        // dd($customer_va);
+
+        $customers = PsbWorkOrders::join('griya_customers.customers','psb_work_orders.pppoe_secret','=','griya_customers.customers.pppoe_secret')
+        ->join('griya_customers.customers_alamat_maps','psb_work_orders.pppoe_secret','=','griya_customers.customers_alamat_maps.pppoe_secret')
+        ->join('griya_coverage.spliters','griya_customers.customers.spliter_id','=','griya_coverage.spliters.id')
+        ->join('griya_coverage.placements','griya_coverage.spliters.placement_id','=','griya_coverage.placements.id')
+        ->join('griya_company.service_packages','griya_customers.customers.service_packages_id','=','griya_company.service_packages.id')
+        ->where('griya_customers.customers.pppoe_secret','=',$request->pppoe_secret)
+        ->get();
+
+        $pppoe_secret = $request->pppoe_secret;
+        $type_customer = $customers[0]['type_customer'];
+        $customer_name = $customers[0]['nama'];
+        $harga_layanan = $customers[0]['harga'];
+        $nama_layanan = $customers[0]['nama_layanan'];
+        $customer_va =  $customers[0]['va'];
+
+        if($type_customer == 3){
+            Customers::where('pppoe_secret',$request->pppoe_secret)->update(['subscribe_status'=>'paid']);
+            PsbWorkOrders::where('pppoe_secret',$request->pppoe_secret)->update(['status_wo'=>'tervalidasi']);
+            return redirect('/oprasional/antrian/requestvalidasi')->with('success', 'berhasil Tervalidasi!');
+        }
+        $pesan = Http::asForm()->post(env('WHATSAPP'), [
+            'number' => $customers[0]['no_tlp'],
+            'message' =>  'Hallo '.$customer_name ."\n"."\n".'Data anda sudah terverifikasi sebagai berikut : '."\n".
+            'Nama Pelanggan : '.$customer_name."\n".
+            'Nomor Pelanggan : '.$pppoe_secret."\n".
+            'Paket Layanan : '.$nama_layanan."\n".
+            'Harga Layanan : '.'Rp. '.$harga_layanan."\n".
+            "\n".'Mohon melakukan pembayaran dari salah satu nomor virtual account berikut :'."\n".
+            'BCA : '.'19005614'.$customer_va."\n".
+            'Mandiri : '.'19005614'.$customer_va."\n".
+            'BRI : '.'142321'.$customer_va."\n".
+            'Alfamart : '.'352220'.$customer_va."\n".
+            'Indomart : '.'352221'.$va."\n"
+            ."\n".'Silakan segera melakukan pembayaran untuk segera di proses pemasangan anda, Terimakasih',
+        ]);
+
+        // dd($customers[0]);
         PsbWorkOrders::where('pppoe_secret',$request->pppoe_secret)->update(['status_wo'=>'tervalidasi']);
-        return redirect('/oprasional/antrian/requestvalidasi'.$request->area_id)->with('success', 'berhasil Tervalidasi!');
+        return redirect('/oprasional/antrian/requestvalidasi')->with('success', 'berhasil Tervalidasi!');
     }
 
     public function penjadwalanUpdate(Request $request)

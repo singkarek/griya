@@ -53,8 +53,8 @@ class SalesController extends Controller
             ->join('griya_customers.customers_alamat_maps','psb_work_orders.pppoe_secret','=','griya_customers.customers_alamat_maps.pppoe_secret')
             ->join('griya_customers.customers_alamat_terpasang','psb_work_orders.pppoe_secret','=','griya_customers.customers_alamat_terpasang.pppoe_secret')
             ->join('griya_company.service_packages','griya_customers.customers.service_packages_id','=','griya_company.service_packages.id')
-            ->where('griya_customers.customers.subscribe_status','=','paid')
-            ->where('status_wo','!=','terpasang')
+            // ->where('griya_customers.customers.subscribe_status','=','paid')
+            ->where('status_wo','!=','selesai')
             ->where('sales_nip','=',$nip)->get();
             // dd($work_orders_psb);
         return view('sales.progres-pemasangan',[

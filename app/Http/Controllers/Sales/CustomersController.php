@@ -8,6 +8,8 @@ use App\Models\Metodes;
 use App\Models\Spliters;
 use App\Models\Customers;
 use App\Models\Prospects;
+use App\Models\VaCustomer;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PsbWorkOrders;
 use App\Models\ProspectPlaces;
@@ -60,12 +62,16 @@ class CustomersController extends Controller
             'type_customer' => 'required',
             'metodes_id' => 'required',
             'nama'   => 'required|max:255',
-            'no_tlp' => 'required|max:20',
+            'no_tlp' =>  ['required', 'regex:/^[a-zA-Z0-9]+$/'] ,
             'alamat' => 'required',
             'rt' => 'required|max:11',
             'rw' => 'required|max:11',
             'service_packages_id' => 'required|max:11'
         ]);
+
+        if (substr($validateData['no_tlp'], 0, 1) === '0') {
+           $validateData['no_tlp'] = '62' . substr($validateData['no_tlp'], 1); // Replace leading 0 with 62
+        }
 
         $validateData['status_awal'] = 'closing';
         $validateData['status_akhir'] = 'closing';
@@ -193,7 +199,16 @@ class CustomersController extends Controller
     public function pengajuanPasang($id)
     {
         [$prospect] = Prospects::where('id', $id)->get();
+        $no_urut_seluruh_customers = Customers::count()+1;
 
+        $lengthVa = Str::length($no_urut_seluruh_customers);
+        $limit = 9-$lengthVa;
+        $p = Str::repeat('0', $limit);
+        $customer_va = "7".$p.$no_urut_seluruh_customers;
+        
+        $get_harga_paket = Pakets::where('id', $prospect->service_packages_id)->get();
+        $harga_paket =$get_harga_paket[0]['harga'];
+        // dd($harga_paket[0]['harga']);
         //saat customer ditetapkan terminate oleh system maka system akan membuat record baru ditable khusus agar ada data dan diketahui siapa saja yang harus di hapus user pppoe dan di olt (record ini akan berhasilkan status true jika sudah di lakukan penghapusan).
         //saat status_subscribe menjadi terminate dan kolom port_acces masih ada nilai, yang akan menjadikan pada wo ada kolom lepas port menjadi true, berfungsi untuk menandakan bahwa teknisi perlu melakukan pelepasan pada port acces dilapangan,
 
@@ -203,10 +218,11 @@ class CustomersController extends Controller
         $spliter_access_id = $prospect->spliter_id;
 
         $customers = Customers::where('coverage_areas_id',$coverage_areas_id)->get();
+        // dd($customer);
         $count_customer = count($customers);
 
         $hari_ini = Carbon::now()->format('dmy');
-        $no_urut_seluruh_customers = Customers::count()+1;
+        
         $pppoe_secret = 'G'.$hari_ini.$no_urut_seluruh_customers;
 
         $user_exist = [];
@@ -322,26 +338,33 @@ class CustomersController extends Controller
             'no_onu'            => $no_onu ,
             "pppoe_vlan_id"     => 1 ,
             "hotspot_vlan_id"   => 2 ,
+            'va'                => $customer_va,
             'subscribe_status'  => 'pra_wo'
         ];
 
         $work_order = ['pppoe_secret' => $pppoe_secret, 'lepas_port' => $cabut_port, 'pppoe_secret_cabut' => $user_terminate, 'status_wo' => 'prosess_validasi'];
 
         try {
-            DB::connection('db_customers')->transaction(function() use ($customer,$work_order,$alamat_maps,$alamat_terpasang){
-                DB::connection('db_oprasional')->transaction(function() use ($customer,$work_order,$alamat_maps,$alamat_terpasang){
-                    DB::connection('db_sales')->transaction(function() use ($customer,$work_order,$alamat_maps,$alamat_terpasang){
+            DB::connection('db_customers')->transaction(function() use ($customer,$work_order,$alamat_maps,$alamat_terpasang,$harga_paket){
+                DB::connection('db_oprasional')->transaction(function() use ($customer,$work_order,$alamat_maps,$alamat_terpasang,$harga_paket){
+                    DB::connection('db_sales')->transaction(function() use ($customer,$work_order,$alamat_maps,$alamat_terpasang,$harga_paket){
+                        DB::connection('db_customers_dasarata')->transaction(function() use ($customer,$work_order,$alamat_maps,$alamat_terpasang,$harga_paket){
+                        $va_customers = ['va' =>$customer['va'] ,'aplikasi' => 1, 'customer_name' => $customer['nama'], 'amount' => $harga_paket ]; 
+                        VaCustomer::create($va_customers);
                         Prospects::where('id', $customer['prospects_id'])->update(['status_proggres' => 'proses_pengajuan']);
                         Customers::create($customer);
                         CustomersAlamatMaps::create($alamat_maps);
                         CustomersAlamatTerpasang::create($alamat_terpasang);
                         PsbWorkOrders::create($work_order);
+                        });
                     });
                 });
             });
             
             return redirect()->back()->with('success', 'Berhasil pengajuan !');
         } catch (\Exception $e) {
+
+            dd($e);
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menjalankan operasi !');
         }
 
