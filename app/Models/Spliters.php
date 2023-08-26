@@ -15,6 +15,6 @@ class Spliters extends Model
 
     public function customers():HasMany
     {
-        return $this->hasMany(customers::class, 'spliter_id');
+        return $this->hasMany(Customers::class, 'spliter_id');
     }
 }
