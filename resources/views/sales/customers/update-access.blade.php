@@ -18,7 +18,7 @@
 @endsection
 
 <script
-    src="https://maps.googleapis.com/maps/api/js?key={{ env('GMAP_KEY') }}&callback=initMap&v=weekly"
+    src="https://maps.googleapis.com/maps/api/js?key={{ confiig('app.gmap_key') }}&callback=initMap&v=weekly"
     defer
     >
 </script>
