@@ -17,11 +17,7 @@
     </div>
 @endsection
 
-<script
-    src="https://maps.googleapis.com/maps/api/js?key={{ confiig('app.gmap_key') }}&callback=initMap&v=weekly"
-    defer
-    >
-</script>
+
 
 {{-- CDN AJAX --}}
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"
