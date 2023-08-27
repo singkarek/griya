@@ -8,7 +8,7 @@
     <h1 class="h2">Selamat Datang</h1>
   </div>
 
-{{-- {{ auth()->user()->is_admin }} --}}
+{{ auth()->user()->is_admin }}
 
 
 @endsection

@@ -81,7 +81,8 @@
             <td>{{ $customer->nama }}</td>
             <td>{{ $customer->nama_layanan }}</td>
             <td>{{ $customer->alamat }}</td>
-            <td>-</td>
+            {{-- <td>{{ $customer->payment_date->format('d M Y') }}</td> --}}
+            <td> {{ \Carbon\Carbon::parse($customer->payment_date)->format('d-M-Y H:i') }}</td>
           </tr>
         @endif
       @endforeach

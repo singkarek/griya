@@ -55,13 +55,15 @@ class AntrianController extends Controller
     public function waitList()
     {
         $wait_payment = PsbWorkOrders::
-            join('griya_customers.customers','psb_work_orders.pppoe_secret','=','griya_customers.customers.pppoe_secret')
-        ->join('griya_customers.customers_alamat_maps','psb_work_orders.pppoe_secret','=','griya_customers.customers_alamat_maps.pppoe_secret')
+        select('griya_customers.customers.*','griya_company.service_packages.*','griya_customers.customers_alamat_terpasang.*','griya_customers.history_paids.payment_date')
+        ->join('griya_customers.customers','psb_work_orders.pppoe_secret','=','griya_customers.customers.pppoe_secret')
+        ->leftjoin('griya_customers.history_paids','griya_customers.customers.va','=','griya_customers.history_paids.va')
+        // ->join('griya_customers.customers_alamat_maps','psb_work_orders.pppoe_secret','=','griya_customers.customers_alamat_maps.pppoe_secret')
         ->join('griya_customers.customers_alamat_terpasang','psb_work_orders.pppoe_secret','=','griya_customers.customers_alamat_terpasang.pppoe_secret')
         ->join('griya_company.service_packages','griya_customers.customers.service_packages_id','=','griya_company.service_packages.id')
         ->where(function($query) {
-            $query->where('subscribe_status', '=', 'pra_wo')
-                  ->orWhere('subscribe_status', '=', 'paid');
+            $query->where('griya_customers.customers.subscribe_status', '=', 'pra_wo')
+                  ->orWhere('griya_customers.customers.subscribe_status', '=', 'paid');
         })
         ->where('status_wo','=','tervalidasi')
         ->where('status_proggres','=',null)
@@ -208,7 +210,7 @@ class AntrianController extends Controller
             'Mandiri : '.'19005614'.$customer_va."\n".
             'BRI : '.'142321'.$customer_va."\n".
             'Alfamart : '.'352220'.$customer_va."\n".
-            'Indomart : '.'352221'.$va."\n"
+            'Indomart : '.'352221'.$customer_va."\n"
             ."\n".'Silakan segera melakukan pembayaran untuk segera di proses pemasangan anda, Terimakasih',
         ]);
 

@@ -6,6 +6,7 @@ use App\Models\Sales;
 use App\Models\Pakets;
 use App\Models\Spliters;
 use App\Models\Customers;
+use App\Models\Prospects;
 use App\Models\CoverageArea;
 use Illuminate\Http\Request;
 use App\Models\PsbWorkOrders;
@@ -61,5 +62,31 @@ class SalesController extends Controller
             'customers' => $work_orders_psb
         ]);
     }
+
+    public function uncover(Request $request)
+    {
+        $validateData = $request->validate([
+            'sales_nip' => 'required',
+            'is_admin' => 'required',
+            'nama'   => 'required|max:255',
+            'no_tlp' =>  'required' ,
+            'status_awal'   => 'required',
+            'lat'   => 'required',
+            'lng'   => 'required',
+            'm_no'   => 'required',
+            'm_jln'   => 'required',
+            'm_kel'   => 'required',
+            'm_kec'   => 'required',
+            'm_kota'   => 'required',
+            'm_type'   => 'required',
+        ]);
+        if (substr($validateData['no_tlp'], 0, 1) === '0') {
+            $validateData['no_tlp'] = '62' . substr($validateData['no_tlp'], 1); // Replace leading 0 with 62
+         }
+         Prospects::create($validateData);
+
+         return redirect('/sales/maps-access')->with('success', 'Data berhasil ditambahkan !');
+    }
+
 
 }

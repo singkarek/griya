@@ -79,6 +79,8 @@ Route::middleware('sales')->group(function (){
             Route::get('/', 'index');
             Route::get('/prosespemasangan', 'prosesPemasangan');
             Route::get('/maps-access', 'mapsAccess');
+            // Route Post Only //
+            Route::post('/uncover', 'uncover');
         });
         Route::prefix('customers')->group(function (){
             Route::controller(CustomersController::class)->group(function (){

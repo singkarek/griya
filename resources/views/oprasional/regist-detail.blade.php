@@ -28,7 +28,7 @@
     </div>
 @endif
 
-{{-- {{ $customers[0] }} --}}
+{{ $customers[0] }}
 
 <div class="table-responsive col-lg-9">
 
@@ -63,7 +63,7 @@ onu {{ $customers[0]['no_onu'] }} type All sn {{ $customers[0]['sn_modem'] }}
 Skirp No. 3 | CEK HASIL REDAMAN <button class="copyButton">Copy</button> 
   <div class="bg-gray-900 text-white p-4 rounded-md mb-5" id="readonlyCode">
 <pre>
-show pon power attenuation gpon-onu_1/2/6:40
+show pon power attenuation {{ $customers[0]['olt'] }}:{{ $customers[0]['no_onu'] }}
 </pre>
   </div>
   </div>
@@ -72,8 +72,8 @@ show pon power attenuation gpon-onu_1/2/6:40
 Skirp No. 4 | ISI PROFILE <button class="copyButton">Copy</button>
 <div class="bg-gray-900 text-white p-4 rounded-md mb-5" id="readonlyCode">
 <pre>
-interface gpon-onu_1/2/16:58
-name Rizki Sukmaning Fatimah
+interface {{ $customers[0]['olt'] }}:{{ $customers[0]['no_onu'] }}
+name {{ $customers[0]['nama'] }}
 description BNDL 1.2.16.1.5
 tcont 1 profile 100M
 tcont 1 gap mode2
@@ -89,14 +89,14 @@ switchport vlan 230-231 tag vport 1
 Skirp No. 5 | PPPOE <button class="copyButton">Copy</button>
 <div class="bg-gray-900 text-white p-4 rounded-md mb-5" id="readonlyCode">
 <pre>
-pon-onu-mng gpon-onu_1/2/16:58
+pon-onu-mng {{ $customers[0]['olt'] }}:{{ $customers[0]['no_onu'] }}
 flow mode 1 tag-filter vid-filter untag-filter discard
 flow 1 priority 0 vid 231
 flow 1 priority 0 vid 230
 gemport 1 flow 1
 switchport-bind switch_0/1 iphost 1
 switchport-bind switch_0/1 veip 1
-pppoe 1 nat enable user Rizki_Sukmaning_Fatimah_020904 password kiosnet0622
+pppoe 1 nat enable user {{ $customers[0]['pppoe_secret'] }} password GRIYA
 vlan-filter-mode iphost 1 tag-filter vid-filter untag-filter discard
 vlan-filter iphost 1 priority 0 vid 230
 vlan port eth_0/4 mode tag vlan 231

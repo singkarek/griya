@@ -131,8 +131,8 @@ class OprasionalController extends Controller
                         'BCA : '.'19005614'.$va."\n".
                         'Mandiri : '.'19005614'.$va."\n".
                         'BRI : '.'142321'.$va."\n".
-                        'Alfamart : '.'352220'.$va."\n",
-                        'Indomart : '.'352221'.$va."\n",
+                        'Alfamart : '.'352220'.$va."\n".
+                        'Indomart : '.'352221'.$va."\n"
         ]);
 
 

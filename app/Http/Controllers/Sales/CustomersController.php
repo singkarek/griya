@@ -82,6 +82,7 @@ class CustomersController extends Controller
         return redirect('/sales/customers')->with('success', 'Data berhasil ditambahkan !');
     }
 
+
     public function editFotoRumah(Prospects $id)
     {
         return view('sales.customers.update-fotorumah',[
@@ -349,7 +350,7 @@ class CustomersController extends Controller
                 DB::connection('db_oprasional')->transaction(function() use ($customer,$work_order,$alamat_maps,$alamat_terpasang,$harga_paket){
                     DB::connection('db_sales')->transaction(function() use ($customer,$work_order,$alamat_maps,$alamat_terpasang,$harga_paket){
                         DB::connection('db_customers_dasarata')->transaction(function() use ($customer,$work_order,$alamat_maps,$alamat_terpasang,$harga_paket){
-                        $va_customers = ['va' =>$customer['va'] ,'aplikasi' => 1, 'customer_name' => $customer['nama'], 'amount' => $harga_paket ]; 
+                        $va_customers = ['va' =>$customer['va'] ,'aplikasi' => 1, 'customer_name' => 'Griya '.$customer['nama'], 'amount' => $harga_paket ]; 
                         VaCustomer::create($va_customers);
                         Prospects::where('id', $customer['prospects_id'])->update(['status_proggres' => 'proses_pengajuan']);
                         Customers::create($customer);
