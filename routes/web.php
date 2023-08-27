@@ -38,6 +38,7 @@ Route::middleware('admin')->group(function (){
         Route::controller(OprasionalController::class)->group(function (){
             Route::get('/', 'index');
             Route::get('/allpsb', 'allPsb');
+            Route::get('/allcustomers', 'allCusttomer');
             Route::get('/regist', 'regist');
             Route::get('/regist/{pppoe_secret}/detail', 'registDetail');
             // Route Post Only //

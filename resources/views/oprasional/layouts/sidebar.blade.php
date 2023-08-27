@@ -13,6 +13,19 @@
       </div>
 
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-2 mb-1 text-muted">
+        <span>Customers</span>
+      </h6>
+
+      <li class="nav-item">
+        <a class="nav-link {{ Request::is('oprasional/allcustomers') ? 'active' : ''}}" aria-current="page" href="/oprasional/allpsb">
+          <span data-feather="chevrons-right"></span> All Customers
+        </a>
+      </li>
+
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-2 border-bottom">
+      </div>
+
+      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-2 mb-1 text-muted">
         <span>Work Orders</span>
       </h6>
   

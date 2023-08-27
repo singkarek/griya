@@ -143,4 +143,8 @@ class OprasionalController extends Controller
         return redirect('/oprasional/allpsb')->with('success', 'Validasi Berhasil !');
     }
 
+    public function allCusttomer()
+    {
+        dd('okee');
+    }
 }
