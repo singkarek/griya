@@ -35,7 +35,7 @@
     @yield('script')
 
     <script
-    src="https://maps.googleapis.com/maps/api/js?key={{ confiig('app.gmap_key') }}&callback=initMap&v=weekly"
+    src="https://maps.googleapis.com/maps/api/js?key={{ config('app.gmap_key') }}&callback=initMap&v=weekly"
     defer
     >
     </script>
