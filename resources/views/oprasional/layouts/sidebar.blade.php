@@ -17,7 +17,7 @@
       </h6>
 
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('oprasional/allcustomers') ? 'active' : ''}}" aria-current="page" href="/oprasional/allpsb">
+        <a class="nav-link {{ Request::is('oprasional/allcustomers') ? 'active' : ''}}" aria-current="page" href="/oprasional/allcustomers">
           <span data-feather="chevrons-right"></span> All Customers
         </a>
       </li>

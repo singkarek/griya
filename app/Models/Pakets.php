@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pakets extends Model
 {
@@ -11,4 +12,9 @@ class Pakets extends Model
     protected $table = 'service_packages';
     protected $guarded = ['id'];
     use HasFactory;
+
+    public function customers():BelongsTo
+    {
+        return $this->belongsTo(Customers::class, 'id', 'service_packages_id');
+    }
 }

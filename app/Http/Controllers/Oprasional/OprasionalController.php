@@ -145,6 +145,10 @@ class OprasionalController extends Controller
 
     public function allCusttomer()
     {
-        dd('okee');
+        $customers = Customers::where('subscribe_status','aktif_berlangganan')->with('paketLayanan')->get();
+        // dd($customers);
+        return view('oprasional.all-customers',[
+            'customers' => $customers
+        ]);
     }
 }

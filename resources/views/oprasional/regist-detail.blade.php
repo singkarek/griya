@@ -74,13 +74,13 @@ Skirp No. 4 | ISI PROFILE <button class="copyButton">Copy</button>
 <pre>
 interface {{ $customers[0]['olt'] }}:{{ $customers[0]['no_onu'] }}
 name {{ $customers[0]['nama'] }}
-description BNDL 1.2.16.1.5
+description {{ $customers[0]['nama'] }}
 tcont 1 profile 100M
 tcont 1 gap mode2
 gemport 1 unicast tcont 1 dir both
 gemport 1 traffic-limit downstream DW100M
 switchport mode hybrid vport 1
-switchport vlan 230-231 tag vport 1  
+switchport vlan 110-111 tag vport 1  
 </pre>
 </div>
 </div>
@@ -91,16 +91,16 @@ Skirp No. 5 | PPPOE <button class="copyButton">Copy</button>
 <pre>
 pon-onu-mng {{ $customers[0]['olt'] }}:{{ $customers[0]['no_onu'] }}
 flow mode 1 tag-filter vid-filter untag-filter discard
-flow 1 priority 0 vid 231
-flow 1 priority 0 vid 230
+flow 1 priority 0 vid 110
+flow 1 priority 0 vid 111
 gemport 1 flow 1
 switchport-bind switch_0/1 iphost 1
 switchport-bind switch_0/1 veip 1
-pppoe 1 nat enable user {{ $customers[0]['pppoe_secret'] }} password GRIYA
+pppoe 1 nat enable user {{ $customers[0]['pppoe_secret'] }} password GRIYANET
 vlan-filter-mode iphost 1 tag-filter vid-filter untag-filter discard
-vlan-filter iphost 1 priority 0 vid 230
-vlan port eth_0/4 mode tag vlan 231
-vlan port wifi_0/4 mode tag vlan 231
+vlan-filter iphost 1 priority 0 vid 110
+vlan port eth_0/4 mode tag vlan 111
+vlan port wifi_0/4 mode tag vlan 111
 dhcp-ip ethuni eth_0/1 from-onu
 dhcp-ip ethuni eth_0/2 from-onu
 dhcp-ip ethuni eth_0/3 from-onu

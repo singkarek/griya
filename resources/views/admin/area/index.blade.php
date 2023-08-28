@@ -28,7 +28,7 @@
   @endif
 
   <a href="{{ route('admin.area.create') }}" class="btn btn-primary mb-3">Buat Area Baru</a>
-
+{{-- {{ $areas }} --}}
   <div class="table-responsive col-lg-9">
     <table class="table table-striped table-sm">
       <thead>
@@ -36,6 +36,7 @@
           <th scope="col">#</th>
           <th scope="col">Nama Area</th>
           <th scope="col">Kode Area</th>
+          <th scope="col">Port Olt</th>
           <th scope="col">Tiang</th>
           <th scope="col">Splitter</th>
 
@@ -47,6 +48,7 @@
           <td>{{ $loop->iteration }}</td>
           <td>{{ $area->nama_area }}</td>
           <td>{{ $area->kode_area }}</td>
+          <td>{{ $area->olt  }}</td>
           <td><a href="/admin/area/tiang/{{ $area->id }}" class="text">Konfigurasi</a></td>
           <td><a href="/admin/area/splitter/{{ $area->id }}" class="text">Konfigurasi</a></td>
         </tr>

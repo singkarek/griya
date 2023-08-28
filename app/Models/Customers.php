@@ -21,6 +21,11 @@ class Customers extends Model
         return $this->belongsTo(Spliters::class, 'spliter_id', 'id');
     }
 
+    public function paketLayanan():HasOne
+    {
+        return $this->hasOne(Pakets::class, 'id', 'service_packages_id');
+    }
+
     public function alamatTerpasang(): HasOne
     {
         return $this->hasOne(CustomersAlamatTerpasang::class, 'pppoe_secret', 'pppoe_secret');
