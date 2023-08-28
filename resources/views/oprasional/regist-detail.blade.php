@@ -76,11 +76,9 @@ interface {{ $customers[0]['olt'] }}:{{ $customers[0]['no_onu'] }}
 name {{ $customers[0]['nama'] }}
 description {{ $customers[0]['nama'] }}
 tcont 1 profile 100M
-tcont 1 gap mode2
-gemport 1 unicast tcont 1 dir both
-gemport 1 traffic-limit downstream DW100M
-switchport mode hybrid vport 1
-switchport vlan 110-111 tag vport 1  
+gemport 1 tcont 1
+service-port 1 vport 1 user-vlan 110 vlan 110
+service-port 2 vport 1 user-vlan 111 vlan 111
 </pre>
 </div>
 </div>
@@ -90,22 +88,13 @@ Skirp No. 5 | PPPOE <button class="copyButton">Copy</button>
 <div class="bg-gray-900 text-white p-4 rounded-md mb-5" id="readonlyCode">
 <pre>
 pon-onu-mng {{ $customers[0]['olt'] }}:{{ $customers[0]['no_onu'] }}
-flow mode 1 tag-filter vid-filter untag-filter discard
-flow 1 priority 0 vid 110
-flow 1 priority 0 vid 111
-gemport 1 flow 1
-switchport-bind switch_0/1 iphost 1
-switchport-bind switch_0/1 veip 1
-pppoe 1 nat enable user {{ $customers[0]['pppoe_secret'] }} password GRIYANET
-vlan-filter-mode iphost 1 tag-filter vid-filter untag-filter discard
-vlan-filter iphost 1 priority 0 vid 110
-vlan port eth_0/4 mode tag vlan 111
+service pppoe gemport 1 vlan 110
+wan-ip 1 mode pppoe username {{ $customers[0]['pppoe_secret'] }} password GRIYANET vlan-profile griyanet110 host 1
+service hotspot gemport 1 vlan 111
 vlan port wifi_0/4 mode tag vlan 111
-dhcp-ip ethuni eth_0/1 from-onu
-dhcp-ip ethuni eth_0/2 from-onu
-dhcp-ip ethuni eth_0/3 from-onu
-dhcp-ip ethuni eth_0/4 from-onu
-dhcp-ip ethuni eth_0/4 from-internet  
+ssid auth wep wifi_0/4 open-system
+ssid ctrl wifi_0/4 name GriyaNet-082130060073
+security-mgmt 1 state enable mode forward protocol web
 </pre>
 </div>
 </div>
