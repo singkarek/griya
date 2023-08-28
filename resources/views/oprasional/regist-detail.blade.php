@@ -61,7 +61,7 @@ onu {{ $customers[0]['no_onu'] }} type All sn {{ $customers[0]['sn_modem'] }}
 
 <div class="col-lg-8">
 Skirp No. 3 | CEK HASIL REDAMAN <button class="copyButton">Copy</button> 
-  <div class="bg-gray-900 text-white p-4 rounded-md mb-5" id="readonlyCode">
+<div class="bg-gray-900 text-white p-4 rounded-md mb-5" id="readonlyCode">
 <pre>
 show pon power attenuation {{ $customers[0]['olt'] }}:{{ $customers[0]['no_onu'] }}
 </pre>
