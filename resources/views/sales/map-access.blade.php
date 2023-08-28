@@ -79,11 +79,17 @@
         <div id="map"></div>
     </div>
 @endsection
-<script
-    src="https://maps.googleapis.com/maps/api/js?key={{ env('GMAP_KEY') }}&callback=initMap&v=weekly"
+{{-- <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxdJw7g37bdvtT-zVLi6ab9NOG_EKY-CA&callback=initMap&v=weekly"
     defer
-></script>
-    
+></script> --}}
+
+<script
+src="https://maps.googleapis.com/maps/api/js?key={{ config('app.gmap_key') }}&callback=initMap&v=weekly"
+defer
+>
+</script>
+
 <script>
 
 function showHiddenForm() {

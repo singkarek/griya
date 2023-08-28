@@ -18,12 +18,26 @@ class Sales
     {
             
         if( !auth()->check()){
-            abort(403);
+            // dd('belom login');
+            return redirect('/');
         }
 
         if(auth()->user()->is_admin == 0){
             if(auth()->user()->division_id != 1){
-                abort(403);
+                // abort(403);
+                // dd(auth()->user()->division_id);
+
+                // if(auth()->user()->division_id){
+                //     return redirect()->intended('/teknisi');
+                // }
+
+                if(auth()->user()->division_id == 1){
+                    return redirect('/sales');
+                }else if(auth()->user()->division_id == 2){
+                    return redirect('/teknisi');
+                }else{
+                    return redirect('/admin');
+                }
             }
         }
                 

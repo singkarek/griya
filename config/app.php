@@ -212,5 +212,6 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
     'gmap_key' => env('GMAP_KEY'),
+    'waapi' => env('WHATSAPP'),
 
 ];

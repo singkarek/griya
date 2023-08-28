@@ -117,7 +117,7 @@ class OprasionalController extends Controller
             return redirect('/oprasional/allpsb')->with('success', 'Validasi Berhasil !');
         }
 
-        Http::asForm()->post(env('WHATSAPP'), [
+        Http::asForm()->post(config('app.waapi'), [
             'number' => $nomer_tlp,
             'message' => 'Terimakasih atas kepercayaan anda untuk berlanggan internet GRIYANET.'."\n"."\n".
                          'Kami Menginformasikan Layanan INTERNET Anda Telah Aktif :'."\n"."\n".

@@ -198,7 +198,7 @@ class AntrianController extends Controller
             PsbWorkOrders::where('pppoe_secret',$request->pppoe_secret)->update(['status_wo'=>'tervalidasi']);
             return redirect('/oprasional/antrian/requestvalidasi')->with('success', 'berhasil Tervalidasi!');
         }
-        $pesan = Http::asForm()->post(env('WHATSAPP'), [
+        $pesan = Http::asForm()->post(config('app.waapi'), [
             'number' => $customers[0]['no_tlp'],
             'message' =>  'Hallo '.$customer_name ."\n"."\n".'Data anda sudah terverifikasi sebagai berikut : '."\n".
             'Nama Pelanggan : '.$customer_name."\n".
@@ -213,8 +213,8 @@ class AntrianController extends Controller
             'Indomart : '.'352221'.$customer_va."\n"
             ."\n".'Silakan segera melakukan pembayaran untuk segera di proses pemasangan anda, Terimakasih',
         ]);
-
-        // dd($customers[0]);
+    
+        // dd($pesan);
         PsbWorkOrders::where('pppoe_secret',$request->pppoe_secret)->update(['status_wo'=>'tervalidasi']);
         return redirect('/oprasional/antrian/requestvalidasi')->with('success', 'berhasil Tervalidasi!');
     }

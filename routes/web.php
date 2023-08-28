@@ -19,20 +19,21 @@ use App\Http\Controllers\Oprasional\OprasionalController;
 
 Route::middleware('guest')->group(function (){
     Route::controller(LoginController::class)->group(function (){
-        Route::get('/login','index')->name('login');
+        Route::get('/','index')->name('login');
         // Route Post Only //
         Route::post('/login','authenticate');
     });
 });
 
-Route::middleware('auth')->group(function (){
+// Route::middleware('auth')->group(function (){
     Route::controller(LoginController::class)->group(function (){
         // Route Post Only //
         Route::post('/logout','logout');
     });
-});
+// });
 
 
+// Route::middleware('admin')->group(function (){
 Route::middleware('admin')->group(function (){
     Route::prefix('oprasional')->group(function (){
         Route::controller(OprasionalController::class)->group(function (){

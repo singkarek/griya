@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class Teknisi
+class Login
 {
     /**
      * Handle an incoming request.
@@ -17,12 +17,19 @@ class Teknisi
     public function handle(Request $request, Closure $next)
     {
         if( !auth()->check()){
+            // dd('belom login');
             return redirect('/');
         }
 
         if(auth()->user()->is_admin == 0){
-            if(auth()->user()->division_id != 2){
+            if(auth()->user()->division_id != 1){
                 // abort(403);
+                // dd(auth()->user()->division_id);
+
+                // if(auth()->user()->division_id){
+                //     return redirect()->intended('/teknisi');
+                // }
+
                 if(auth()->user()->division_id == 1){
                     return redirect('/sales');
                 }else if(auth()->user()->division_id == 2){
