@@ -27,12 +27,10 @@
           |
         </div>
         @endcan
-        <li class="col navbar-brand-a ">
-            <form action="/logout" method="post">
+        <li class="col navbar-brand-a border-0">
+            <form action="/logout" method="post" class="border-0">
               @csrf
-              <button type="submit" class="text-white border-0 bg-transparent">
-                <span data-feather="log-out"></span> Logout
-              </button>
+              <button type="submit" id="post-button" class="text-white border-0 bg-transparent">Logout</button>
             </form>
         </li>
       </div>

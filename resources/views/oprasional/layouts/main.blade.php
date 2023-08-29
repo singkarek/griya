@@ -48,5 +48,28 @@
     {{-- JS TEMPLATE --}}
     <script src="/js/dashboard.js"></script>
 
+{{-- <script>
+document.getElementById('post-button').addEventListener('click', function() {
+  // var data = 'data=nilai_data'; // Data yang ingin Anda kirim
+
+  fetch('/logout', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-CSRF-TOKEN': '{{ csrf_token() }}' // Token CSRF dari Laravel
+    }
+    // body: data
+  })
+  // .then(response => response.json())
+  // .then(data => {
+  //   window.location.href = '/admin'
+  //   console.log(data);
+    // window.location.href = "/sales/customers"
+    // Lakukan sesuatu dengan respons dari server
+  // })
+  // .catch(error => console.error('Error:', error));
+// });
+</script> --}}
+
   </body>
 </html>

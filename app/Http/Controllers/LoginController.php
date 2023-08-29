@@ -43,6 +43,7 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        
         Auth::logout();
 
         $request->session()->invalidate();
@@ -50,6 +51,8 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+
+        // return response()->json(['message' => 'Data berhasil diproses', 'data' => 'a']);
 
     }
 }
