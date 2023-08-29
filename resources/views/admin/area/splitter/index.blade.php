@@ -29,43 +29,6 @@
 
   
   <div class="table-responsive col-lg-9">
-    {{-- <table class="table table-striped table-sm">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Place</th>
-          <th scope="col">Jenis Tempat</th>
-          <th scope="col">Alamat</th>
-          <th scope="col">Type Spliter</th>
-          <th scope="col">Action</th>
-
-        </tr>
-      </thead>
-      <tbody>
-      
-        @foreach ($places as $place => $nama_tempat)
-        <tr>
-          <td>{{ $loop->iteration }}</td>
-           @if($place === 0 || $nama_tempat->nama_tempat !== $places[$place - 1]->nama_tempat)
-            <td>{{ $nama_tempat->nama_tempat }}</td>
-           @else
-            <td> </td>
-           @endif
-          <td>
-            {{ $nama_tempat->type_spliter }}
-          </td>
-          <td>
-            @if($nama_tempat->alamat == null | $nama_tempat->jenis_tempat == null )
-             -
-            @else
-              <a href='/admin/area/splitter/{{ $nama_tempat->id }}/edit/splitter' class="badge btn-success"><span data-feather="plus-square"></span> Add</a>
-            @endif
-          </td>
-        </tr>
-        @endforeach
-
-      </tbody>
-    </table> --}}
     <table class="table table-striped table-sm">
       <thead>
         <tr>
@@ -106,5 +69,5 @@
       </tbody>
     </table>
   </div>
-{{ $places[0] }}
+{{-- {{ $places[0] }} --}}
 @endsection

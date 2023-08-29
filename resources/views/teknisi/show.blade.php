@@ -1,5 +1,15 @@
 @extends('teknisi.layouts.main')
 
+@push('css')
+<style>
+  input.link-like {
+  color: blue;
+  }
+
+</style>
+@endpush
+
+
 @section('container')
 
 
@@ -46,11 +56,12 @@
       </div>
       <div class="col-md-3">
         <label for="alamat" class="h6 form-label">Alamat</label>
-        <input type="text" class="form-control" id="alamat" name='alamat' disabled  value="{{ old('alamat',$customers[0]->alamat) }}">
+        {{-- <input type="text" class="form-control" id="alamat" name='alamat' disabled  value="{{ old('alamat',$customers[0]->alamat) }}"> --}}
+        <input type="text" class="form-control link-like" id="alamat" value="{{ old('alamat',$customers[0]->alamat) }}" onclick="confirmAndOpenLink('https://www.google.com/maps/search/?api=1&query={{ $customers[0]->lat_customer }},{{ $customers[0]->lng_customer }}');" readonly  >
       </div>
-      <div class="col-md-2">
+      <div class="col-md-3">
         <label for="no_tlp" class="h6 form-label">Tlp(WA)</label>
-        <input type="text" class="form-control" id="no_tlp" name='no_tlp' disabled value="{{ old('nama',$customers[0]->no_tlp) }}">
+        <input type="text" class="link-like form-control" id="no_tlp" value="{{ old('nama',$customers[0]->no_tlp) }}" onclick="confirmAndOpenLink('https://wa.me/{{ $customers[0]->no_tlp }}');" readonly>
       </div>
 
     </div>
@@ -76,7 +87,7 @@
       </div>
       <div class="col-md-3">
         <label for="access" class="h6 form-label">Access</label>
-        <input type="text" class="form-control" id="access" name='access' disabled value="{{ old('access', $customers[0]->kode_area." ".$customers[0]->parent_ke.".".$customers[0]->spliter_ke ) }}">
+        <input type="text" class="form-control link-like" id="access" value="{{ old('access', $customers[0]->kode_area." ".$customers[0]->parent_ke.".".$customers[0]->spliter_ke ) }}" onclick="confirmAndOpenLink('https://www.google.com/maps/search/?api=1&query={{ $customers[0]->lat_place }},{{ $customers[0]->lng_place }}');" readonly  >
       </div>
       <div class="col-md-3">
         <label for="access" class="h6 form-label">port ke</label>
@@ -103,5 +114,16 @@
 
 {{-- </div> --}}
 
+<script>
+  function confirmAndOpenLink(url) {
+    // Menampilkan kotak dialog konfirmasi
+    var confirmation = confirm("Apakah Anda yakin ingin membuka tautan ini di tab baru?");
+    
+    // Jika pengguna mengkonfirmasi, buka tautan dalam tab baru
+    if (confirmation) {
+      window.open(url, '_blank');
+    }
+  }
+  </script>
 
 @endsection

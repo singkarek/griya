@@ -79,7 +79,8 @@ class TeknisiController extends Controller
     public function show($pppoe_secret)
     {
         $customers = PsbWorkOrders::
-        join('griya_customers.customers','psb_work_orders.pppoe_secret','=','griya_customers.customers.pppoe_secret')
+        select( 'griya_customers.customers.*', 'griya_customers.customers_alamat_terpasang.alamat' , 'griya_customers.customers_alamat_maps.lat as lat_customer','griya_customers.customers_alamat_maps.lng as lng_customer', 'griya_company.service_packages.*', 'griya_coverage.spliters.*' , 'griya_coverage.coverage_areas.*','griya_oprasional.prospects_places.*','griya_coverage.placements.*' , 'griya_coverage.placements.lat as lat_place' , 'griya_coverage.placements.lng as lng_place')
+        ->join('griya_customers.customers','psb_work_orders.pppoe_secret','=','griya_customers.customers.pppoe_secret')
         ->join('griya_customers.customers_alamat_maps','psb_work_orders.pppoe_secret','=','griya_customers.customers_alamat_maps.pppoe_secret')
         ->join('griya_customers.customers_alamat_terpasang','psb_work_orders.pppoe_secret','=','griya_customers.customers_alamat_terpasang.pppoe_secret')
         ->join('griya_company.service_packages','griya_customers.customers.service_packages_id','=','griya_company.service_packages.id')

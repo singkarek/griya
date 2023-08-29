@@ -28,17 +28,17 @@
     </div>
 @endif
 
-{{ $customers[0] }}
+{{-- {{ $customers[0] }} --}}
 
 <div class="table-responsive col-lg-9">
 
-  <form method="post" action="/oprasional/regist/store">
-    @csrf
-    <input type="text" value="{{ $customers[0]['pppoe_secret'] }}" name="pppoe_secret" required hidden>
-    <div class="mt-4 mb-5">
-      <button type="submit" class="btn btn-primary">Konfrim Regist Done</button>
-    </div>
-  </form>
+<form method="post" action="/oprasional/regist/store">
+  @csrf
+  <input type="text" value="{{ $customers[0]['pppoe_secret'] }}" name="pppoe_secret" required hidden>
+  <div class="mt-4 mb-5">
+    <button type="submit" class="btn btn-primary">Konfrim Regist Done</button>
+  </div>
+</form>
 
 <div class="col-lg-8">
 Skirp No. 1 | SCAN MODEM <button class="copyButton">Copy</button> 
@@ -54,7 +54,7 @@ Skirp No. 2 | REGIS MODEM <button class="copyButton">Copy</button>
 <div class="bg-gray-900 text-white p-4 rounded-md mb-5" id="readonlyCode">
 <pre>
 interface {{ $customers[0]['olt'] }}
-onu {{ $customers[0]['no_onu'] }} type All sn {{ $customers[0]['sn_modem'] }}  
+onu {{ $customers[0]['no_onu'] }} type ALL sn {{ $customers[0]['sn_modem'] }}
 </pre>
 </div>
 </div>
@@ -83,7 +83,7 @@ service-port 2 vport 1 user-vlan 111 vlan 111
 </div>
 </div>
 
-<div class="col-lg-8 mb-5">
+<div class="col-lg-9 mb-5">
 Skirp No. 5 | PPPOE <button class="copyButton">Copy</button>
 <div class="bg-gray-900 text-white p-4 rounded-md mb-5" id="readonlyCode">
 <pre>

@@ -14,7 +14,12 @@ class TiangAreaController extends Controller
     // $data = 
     public function index($id)
     {
-        $data = CoverageArea::Join('placements', 'coverage_areas.id', '=' , 'placements.area_id')->WHERE('placements.area_id',$id)->get();
+        $data = CoverageArea::
+        select('placements.*', 'placements.id as placement_id', 'pole.*')
+        ->Join('placements', 'coverage_areas.id', '=' , 'placements.area_id')
+        ->leftJoin('pole', 'placements.tiang_id', '=' , 'pole.id')
+        ->WHERE('placements.area_id',$id)->get();
+        // dd($data);
         return view('admin.area.tiang.index',[
             "places" => $data
         ]);
