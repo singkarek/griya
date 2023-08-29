@@ -10,5 +10,6 @@ class VaCustomer extends Model
     protected $connection   = 'db_customers_dasarata';
     protected $table        = 'va_customers';
     protected $guarded      = ['id'];
+    protected $timestamps = false;
     use HasFactory;
 }
