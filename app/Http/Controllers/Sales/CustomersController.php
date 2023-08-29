@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Sales;
 use App\Models\User;
 use App\Models\Pakets;
 use App\Models\Metodes;
+use App\Models\Provider;
 use App\Models\Spliters;
 use App\Models\Customers;
 use App\Models\Prospects;
@@ -48,6 +49,7 @@ class CustomersController extends Controller
             'metodes'       => Metodes::all(),
             'layananpakets' => Pakets::all(),
             'sales_survey' => User::where('division_id','1')->get(),
+            'providers' => Provider::all(),
             'sales_nip' => $nip,
             'is_admin' => $admin
         ]);
@@ -60,6 +62,7 @@ class CustomersController extends Controller
             'sales_nip' => 'required',
             'is_admin' => 'required',
             'type_customer' => 'required',
+            'migrasi_user' => 'required',
             'metodes_id' => 'required',
             'nama'   => 'required|max:255',
             'no_tlp' =>  ['required', 'regex:/^[a-zA-Z0-9]+$/'] ,

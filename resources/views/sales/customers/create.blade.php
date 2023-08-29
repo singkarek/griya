@@ -6,7 +6,7 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Create Customer</h1>
 </div>
-
+{{-- {{ $providers }} --}}
 @if ($errors->any())
   <div class="alert alert-danger col-lg-9">
       <ul>
@@ -30,7 +30,7 @@
 <form method="post" action="/sales/customers/store" autocomplete="">
     @csrf
 
-          <div class="mb-3 ">
+        <div class="mb-3 ">
             <label for="metodes_id" class="h6 form-label @error('metodes_id') is-invalid @enderror" >Customer mendapatkan info dari ?</label>
             <select class="form-select" name="metodes_id" required>
               @foreach ($metodes as $metode)
@@ -46,6 +46,15 @@
           </select>
         </div>
 
+        <div class="mb-3 ">
+          <label for="migrasi_user" class="h6 form-label @error('migrasi_user') is-invalid @enderror" >Miggrasi Pengguna</label>
+          <select class="form-select" name="migrasi_user" required>
+            @foreach ($providers as $provider)
+            <option value="{{ $provider->id }}" >{{ $provider->provider}}</option>         
+            @endforeach
+            <option value="" selected>--- Miggrasi Pengguna ---</option>
+          </select>
+        </div>
 
         <div class="mb-2">
           <label for="nama" class="h6 form-label">Nama Customer (Nama lengkap)</label>
@@ -70,7 +79,6 @@
           </div>
 
         <div class="row mb-2">
-
             <div class="col">
                 <label for="rt" class="h6 form-label">RT</label>
                 <input type="text" class="form-control @error('rt') is-invalid @enderror" id="rt" name='rt' required value="{{ 
@@ -92,7 +100,6 @@
                     </div>
                 @enderror
               </div>
-
         </div>
 
         <div class="mb-3">
